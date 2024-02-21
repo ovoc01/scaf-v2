@@ -3,6 +3,7 @@ package com.noarthedev.scaffold.template.part;
 import java.util.Map;
 import java.util.Optional;
 
+import com.noarthedev.scaffold.helper.Helper;
 import com.noarthedev.scaffold.template.lang.ProgrammingLangSyntax;
 
 
@@ -20,12 +21,14 @@ public class EntityPart extends BasePart {
    }
 
    @Override
-   public EntityPart fromFileContent(Map<String, Object> map, ProgrammingLangSyntax pSyntax) {
+   public EntityPart fromFileContent(String fileContent, ProgrammingLangSyntax pSyntax) {
       EntityPart part = new EntityPart();
       part.setPSyntax(pSyntax);
 
       //
-      BasePart basePart = super.fromFileContent(map, pSyntax);
+      BasePart basePart = super.fromFileContent(fileContent, pSyntax);
+      Map<String, Object> map = Helper.stringToMap(fileContent);
+
       
       basePart.completeChild(part);
 

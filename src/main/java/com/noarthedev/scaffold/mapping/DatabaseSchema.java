@@ -59,10 +59,11 @@ public class DatabaseSchema {
       tableSchema.intOtherColumn(otherColResultSet);
       //System.out.println(tableSchema.toEntity(frameworkInUse,ENTIY_PACKAGE));
       
-      Helper.generateFile(tableSchema.entityName(),FILE_EXTENSION, tableSchema.toEntity(frameworkInUse), String.format("%s/%s","generate","entity"));
+      //Helper.generateFile(tableSchema.entityName(),FILE_EXTENSION, tableSchema.toEntity(frameworkInUse), String.format("%s/%s","generate","entity"));
 
-      Helper.generateFile(tableSchema.entityName()+"Repository",FILE_EXTENSION, tableSchema.toRepository(frameworkInUse), String.format("%s/%s","generate","repository"));
+      //Helper.generateFile(tableSchema.repositoryName(),FILE_EXTENSION, tableSchema.toRepository(frameworkInUse), String.format("%s/%s","generate","repository"));
 
+      tableSchema.toService(frameworkInUse);
 
       tables.add(tableSchema);
       //break;

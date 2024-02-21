@@ -4,6 +4,7 @@ package com.noarthedev.scaffold.template.part;
 
 import java.util.Map;
 
+import com.noarthedev.scaffold.helper.Helper;
 import com.noarthedev.scaffold.template.lang.ProgrammingLangSyntax;
 
 import lombok.Getter;
@@ -20,9 +21,11 @@ public class RepositoryPart extends BasePart{
 
 
    @Override
-   public RepositoryPart fromFileContent(Map<String, Object> map, ProgrammingLangSyntax pSyntax){
+   public RepositoryPart fromFileContent(String fileContent, ProgrammingLangSyntax pSyntax){
       RepositoryPart repositoryPart = new RepositoryPart();
-      BasePart pBasePart = super.fromFileContent(map, pSyntax);
+      BasePart pBasePart = super.fromFileContent(fileContent, pSyntax);
+
+      //Map<String, Object> map = Helper.stringToMap(fileContent);
 
 
       pBasePart.completeChild(repositoryPart);

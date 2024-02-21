@@ -110,8 +110,7 @@ public class TableSchema {
   }
 
   public String toRepository(Framework inUse) {
-    
-        
+
     inUse.getRepository().setTemplate(
         inUse.getRepository()
             .getTemplate()
@@ -138,13 +137,70 @@ public class TableSchema {
     String pkType = getPrimaryKey() != null ? getPrimaryKey().get().getType() : "Integer";
 
     temp = temp.replace("##primaryKeyType", pkType);
-   temp = temp.replace("[imports]", inUse.getRepository().importsToDo()+String.format("\n%s %s.%s;", pSyntax.getImportName(),ENTITY_PACKAGE,entityName()));
+    temp = temp.replace("[imports]", inUse.getRepository().importsToDo()
+        + String.format("\n%s %s.%s;", pSyntax.getImportName(), ENTITY_PACKAGE, entityName()));
 
     return temp.replace("##entityName", entityName());
   }
 
+  public String toService(Framework inUse) {
+    inUse.getService().setTemplate(
+        inUse.getService()
+            .getTemplate()
+            .replace("[package]", pSyntax.getPackageName() + " " + REPO_PACKAGE + ";"));
+
+    String annotations = inUse.getService().entityAnnotations().isEmpty()
+        ? ""
+        : inUse.getService().entityAnnotations();
+    String inheritance = inUse.getService().getInheritance().equals("none")
+        ? ""
+        : pSyntax.getInheritance() + " " + inUse.getService().getInheritance();
+
+    inUse.getService().setTemplate(
+        inUse.getService()
+            .getTemplate()
+            .replace("?[inheritance]", inheritance));
+
+    inUse.getService().setTemplate(
+        inUse.getService()
+            .getTemplate()
+            .replace("[annotation]", annotations));
+
+    inUse.getService().setTemplate(
+      inUse.getService()
+            .getTemplate()
+            .replace("[service-methods]", inUse.getService().getMethods())
+    );
+
+    String temp = inUse.getService().getTemplate();
+    String pkType = getPrimaryKey() != null ? getPrimaryKey().get().getType() : "Integer";
+
+    temp = temp.replace("##primaryKeyType", pkType);
+    temp = temp.replace("[imports]", inUse.getService().importsToDo()
+        + String.format("\n%s %s.%s;", pSyntax.getImportName(),REPO_PACKAGE, repositoryName()));
+
+    
+     temp = temp.replace("##entityName", entityName());
+      temp = temp.replace("##tableName", Helper.toCamelCase(getTableName()));
+     System.out.println(temp);
+
+     return null;
+  }
+
   public String entityName() {
     return Helper.toPascalCase(tableName);
+  }
+
+  public String repositoryName() {
+    return entityName() + "Repository";
+  }
+
+  public String serviceName() {
+    return entityName() + "Service";
+  }
+
+  public String controllerName() {
+    return entityName() + "Controller";
   }
 
   public String allColumns(Framework inUse) {

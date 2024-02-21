@@ -2,6 +2,7 @@ package com.noarthedev.scaffold.template.part;
 
 import java.util.Map;
 
+import com.noarthedev.scaffold.helper.Helper;
 import com.noarthedev.scaffold.template.Template;
 import com.noarthedev.scaffold.template.lang.ProgrammingLangSyntax;
 
@@ -15,17 +16,26 @@ public class BasePart {
    protected String[] imports;
    protected String[] annotations;
    protected String inheritance;
+   protected String methods;
+   
 
    public BasePart(String part) {
       CLASS_PART = part.toLowerCase();
    }
 
-   public BasePart fromFileContent(Map<String, Object> map, ProgrammingLangSyntax pSyntax) {
+   public BasePart fromFileContent(String fileContent, ProgrammingLangSyntax pSyntax) {
+      //Map<String,Object> map = null;
+
+      Map<String, Object> map = Helper.stringToMap(fileContent);
       BasePart part = new BasePart(CLASS_PART);
-      part.setPSyntax(pSyntax);
-      part.setAnnotations(map.get(CLASS_PART + ".annotation").toString().split(","));
-      part.setImports(map.get(CLASS_PART + ".imports").toString().split(","));
-      part.setInheritance(map.get(CLASS_PART + ".inheritance").toString());
+      try{
+         part.setPSyntax(pSyntax);
+         part.setAnnotations(map.get(CLASS_PART + ".annotation").toString().split(","));
+         part.setImports(map.get(CLASS_PART + ".imports").toString().split(","));
+         part.setInheritance(map.get(CLASS_PART + ".inheritance").toString());
+      }catch(NullPointerException p){
+         System.out.println(p);
+      }
 
       part.getTemplate(pSyntax.getLang());
       part.prepareTemplate();

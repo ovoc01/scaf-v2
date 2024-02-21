@@ -3,7 +3,7 @@
 [imports]
 
 [annotation]
-[class-declaration] [entityName]Service ?[inheritance] [open-brackets]
+[class-declaration] ##entityNameService ?[inheritance] [open-brackets]
 
    ##entityNameRepository ##tableNameRepository;
  

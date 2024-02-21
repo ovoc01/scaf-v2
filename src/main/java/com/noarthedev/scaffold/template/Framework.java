@@ -34,8 +34,10 @@ public class Framework {
       Map<String, Object> map = Helper.stringToMap(fileContent);
       
       framework.retrieveFileGenerable(map.get("file-generable").toString());
-      framework.setEntity(new EntityPart().fromFileContent(map, pSyntax));
-      framework.setRepository(new RepositoryPart().fromFileContent(map, pSyntax));
+      framework.setEntity(new EntityPart().fromFileContent(fileContent, pSyntax));
+      framework.setRepository(new RepositoryPart().fromFileContent(fileContent, pSyntax));
+
+      framework.setService(new ServicePart().fromFileContent(fileContent, pSyntax));
       
       //System.out.println(framework.getEntity().getTemplate());
       return framework;
