@@ -1,0 +1,8 @@
+[package]
+
+[imports]
+
+[annotation]
+[interface-declaration] ##entityNameRepository ?[inheritance] [open-brackets]
+
+[close-brackets]

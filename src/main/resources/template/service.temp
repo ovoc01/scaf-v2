@@ -1,0 +1,15 @@
+[package]
+
+[imports]
+
+[annotation]
+[class-declaration] [entityName]Service ?[inheritance] [open-brackets]
+
+   ##entityNameRepository ##tableNameRepository;
+ 
+   [service-methods]
+
+
+[open-brackets]
+
+[close-brackets]

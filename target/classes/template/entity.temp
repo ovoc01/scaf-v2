@@ -1,0 +1,15 @@
+[package]
+
+[imports]
+
+?@[annotation]
+[class-declaration] [entityName] ?[inheritance] [open-brackets]
+
+    @?[id-marks]
+    ?[Id]
+
+    [columns]
+
+    [getters&&setters]
+
+[close-brackets]

@@ -1,0 +1,26 @@
+package=namespace
+import=using
+class-declaration=public class
+open-brackets={
+close-brackets=}
+syntax-case=SNAKE_CASE
+inheritance-syntax=:
+annotation-syntax:[:mark]
+
+##getters&&setters
+   public ##argsType ##upperFieldName
+   {
+        get{ return ##fieldName; }
+        set{ ##fieldName=value; }
+   }
+
+!!getters&&setters
+
+##dbFieldCorrespondance
+    int4=Integer
+    varchar=String
+    timestamp=Timestamp:java.sql.Timestamp
+    date=Date:java.sql.Date
+    float=Double
+    numeric=Double
+!!dbFieldCorrespondance

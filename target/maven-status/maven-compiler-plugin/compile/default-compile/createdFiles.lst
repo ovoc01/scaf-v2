@@ -1,0 +1,17 @@
+com/noarthedev/scaffold/mapping/TableSchema.class
+com/noarthedev/scaffold/template/Framework.class
+com/noarthedev/scaffold/template/part/ServicePart.class
+com/noarthedev/scaffold/template/Framework$FrameworkBuilder.class
+com/noarthedev/scaffold/helper/Helper.class
+com/noarthedev/scaffold/template/part/EntityPart.class
+com/noarthedev/scaffold/template/lang/ProgrammingLangSyntax.class
+com/noarthedev/scaffold/App.class
+com/noarthedev/scaffold/mapping/DatabaseSchema.class
+com/noarthedev/scaffold/mapping/ForeignKey.class
+com/noarthedev/scaffold/template/Template.class
+com/noarthedev/scaffold/template/lang/DbField.class
+com/noarthedev/scaffold/mapping/PrimaryKey.class
+com/noarthedev/scaffold/run/GenerationSession.class
+com/noarthedev/scaffold/template/part/RepositoryPart.class
+com/noarthedev/scaffold/mapping/Column.class
+com/noarthedev/scaffold/template/part/BasePart.class
