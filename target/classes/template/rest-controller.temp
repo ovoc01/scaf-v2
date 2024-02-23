@@ -1,11 +1,11 @@
 [package]
+
 [imports]
 
 [annotation]
-[class-declaration] ##entityNameController [open-brackets]
+[class-declaration] [entityName]Controller [open-brackets]
     ##injection-annotation
-    ##entityNameService ##tableNameService;
+    [entityName]Service [tableName]Service;
     [controller-methods]
-
 
 [close-brackets]

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.noarthedev.scaffold.helper.Helper;
 import com.noarthedev.scaffold.template.Framework;
 import com.noarthedev.scaffold.template.generator.CodeGenerator;
 import com.noarthedev.scaffold.template.generator.impl.*;
@@ -58,23 +59,17 @@ public class DatabaseSchema {
           null);
 
       tableSchema.intOtherColumn(otherColResultSet);
-      //System.out.println(tableSchema.toEntity(frameworkInUse,ENTIY_PACKAGE));
 
-      //Helper.generateFile(tableSchema.entityName(),FILE_EXTENSION, tableSchema.toEntity(frameworkInUse), String.format("%s/%s","generate","entity"));
+      CodeGenerator generator = new RestControllerGenerator(tableSchema, frameworkInUse, BASE_PACKAGE);
 
-      //Helper.generateFile(tableSchema.repositoryName(),FILE_EXTENSION, tableSchema.toRepository(frameworkInUse), String.format("%s/%s","generate","repository"));
+     Helper.generateFile(tableSchema.entityName(), FILE_EXTENSION, generator.generate(), "generate/entity");
 
-      //Helper.generateFile(tableSchema.serviceName(),FILE_EXTENSION, tableSchema.toService(frameworkInUse), String.format("%s/%s","generate","service"));
-      //tableSchema.toService(frameworkInUse);
-      
-      //Helper.generateFile(tableSchema.controllerName(),FILE_EXTENSION, tableSchema.toRestController(frameworkInUse), String.format("%s/%s","generate","controller"));
+     //generator = new RepositoryGenerator(tableSchema, frameworkInUse, BASE_PACKAGE);
 
-      CodeGenerator generator = new ServiceGenerator(tableSchema, frameworkInUse, BASE_PACKAGE);
 
-      System.out.println(generator.generate());
 
       tables.add(tableSchema);
-      break;
+      //break;
     }
   }
 }

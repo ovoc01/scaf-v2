@@ -22,7 +22,7 @@ public class EntityGenerator extends CodeGenerator {
 
    @Override
    protected String getPackageName() {
-      return String.format("%s.entity;", BASE_PACKAGE);
+      return String.format("%s %s.entity;", inUse.getPSyntax().getPackageName(), BASE_PACKAGE);
    }
 
    @Override

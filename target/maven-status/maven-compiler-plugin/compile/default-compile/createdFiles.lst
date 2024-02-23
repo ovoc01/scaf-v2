@@ -5,6 +5,7 @@ com/noarthedev/scaffold/template/Framework$FrameworkBuilder.class
 com/noarthedev/scaffold/helper/Helper.class
 com/noarthedev/scaffold/template/generator/impl/EntityGenerator.class
 com/noarthedev/scaffold/template/part/EntityPart.class
+com/noarthedev/scaffold/template/generator/impl/RestControllerGenerator.class
 com/noarthedev/scaffold/template/lang/ProgrammingLangSyntax.class
 com/noarthedev/scaffold/App.class
 com/noarthedev/scaffold/mapping/DatabaseSchema.class

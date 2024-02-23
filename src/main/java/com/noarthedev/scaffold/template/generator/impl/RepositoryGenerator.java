@@ -29,8 +29,10 @@ public class RepositoryGenerator extends CodeGenerator {
 
    @Override
    protected String getPackageName() {
-      return String.format("%s.repository;", BASE_PACKAGE);
+      return String.format("%s %s.repository;",inUse.getPSyntax().getPackageName(), BASE_PACKAGE);
    }
+
+   
 
    @Override
    protected String getAnnotations() {
