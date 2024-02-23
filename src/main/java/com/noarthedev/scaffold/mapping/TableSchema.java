@@ -55,98 +55,11 @@ public class TableSchema {
     }
   }
 
-  public String toEntity(Framework inUse) {
-    // FIXME: transferer les template pour chaque type de fichier dans les BasePart
-    // chid class
-
-    /*
-     * System.out.println( "test bogoss"+ inUse.getEntity()
-     * .getTemplate());
-     */
-    inUse.getEntity().setTemplate(
-        inUse.getEntity()
-            .getTemplate()
-            .replace("[imports]", inUse.getEntity().importsToDo()));
-
-    inUse.getEntity().setTemplate(
-        inUse.getEntity()
-            .getTemplate()
-            .replace("[package]", pSyntax.getPackageName() + " " + ENTITY_PACKAGE + ";"));
-
-    String annotations = inUse.getEntity().entityAnnotations().isEmpty()
-        ? ""
-        : inUse.getEntity().entityAnnotations();
-    String inheritance = inUse.getEntity().getInheritance().equals("none")
-        ? ""
-        : pSyntax.getInheritance() + " " + inUse.getEntity().getInheritance();
-
-    inUse.getEntity().setTemplate(
-        inUse.getEntity()
-            .getTemplate()
-            .replace("?@[annotation]", annotations));
-
-    inUse.getEntity().setTemplate(
-        inUse.getEntity()
-            .getTemplate()
-            .replace("?[inheritance]", inheritance));
-
-    String temp = inUse.getEntity().getTemplate();
-    // pSyntax.setTemplate(pSyntax.getTemplate()));
-    // System.out.println(pSyntax.getTemplate());
-    // System.out.println(temp.replace("[entityName]", entityName()));
-    // System.out.println(primaryKey);
-
-    if (primaryKey != null && !primaryKey.isEmpty()) {
-      String idMarks = pSyntax
-          .getAnnotation()
-          .replace(":mark", inUse.getEntity().getIdMarks());
-      temp = temp.replace("@?[id-marks]", idMarks);
-      temp = temp.replace("?[Id]", primaryKey.get().toString());
-    }
-
-    temp = temp.replace("[columns]", allColumns(inUse));
-    temp = temp.replace("[getters&&setters]", allGetterAndSetters());
-    return temp.replace("[entityName]", entityName());
-  }
-
 
   public boolean isPrimaryKeyPresent(){
     return primaryKey != null && !primaryKey.isEmpty();
   }
 
-  public String toRepository(Framework inUse) {
-
-    inUse.getRepository().setTemplate(
-        inUse.getRepository()
-            .getTemplate()
-            .replace("[package]", pSyntax.getPackageName() + " " + REPO_PACKAGE + ";"));
-
-    String annotations = inUse.getRepository().entityAnnotations().isEmpty()
-        ? ""
-        : inUse.getRepository().entityAnnotations();
-    String inheritance = inUse.getRepository().getInheritance().equals("none")
-        ? ""
-        : pSyntax.getInheritance() + " " + inUse.getRepository().getInheritance();
-
-    inUse.getRepository().setTemplate(
-        inUse.getRepository()
-            .getTemplate()
-            .replace("?[inheritance]", inheritance));
-
-    inUse.getRepository().setTemplate(
-        inUse.getRepository()
-            .getTemplate()
-            .replace("[annotation]", annotations));
-
-    String temp = inUse.getRepository().getTemplate();
-    String pkType = getPrimaryKey() != null ? getPrimaryKey().get().getType() : "Integer";
-
-    temp = temp.replace("##primaryKeyType", pkType);
-    temp = temp.replace("[imports]", inUse.getRepository().importsToDo()
-        + String.format("\n%s %s.%s;", pSyntax.getImportName(), ENTITY_PACKAGE, entityName()));
-
-    return temp.replace("##entityName", entityName());
-  }
 
   public String toService(Framework inUse) {
     inUse.getService().setTemplate(

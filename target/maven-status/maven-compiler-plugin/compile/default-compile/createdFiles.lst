@@ -10,6 +10,7 @@ com/noarthedev/scaffold/App.class
 com/noarthedev/scaffold/mapping/DatabaseSchema.class
 com/noarthedev/scaffold/template/generator/impl/RepositoryGenerator.class
 com/noarthedev/scaffold/mapping/ForeignKey.class
+com/noarthedev/scaffold/template/generator/impl/ServiceGenerator.class
 com/noarthedev/scaffold/template/Template.class
 com/noarthedev/scaffold/template/lang/DbField.class
 com/noarthedev/scaffold/template/generator/TemplateHelper.class

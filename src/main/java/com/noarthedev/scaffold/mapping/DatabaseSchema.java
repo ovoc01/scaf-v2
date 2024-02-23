@@ -8,11 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.noarthedev.scaffold.helper.Helper;
 import com.noarthedev.scaffold.template.Framework;
 import com.noarthedev.scaffold.template.generator.CodeGenerator;
-import com.noarthedev.scaffold.template.generator.impl.EntityGenerator;
-import com.noarthedev.scaffold.template.generator.impl.RepositoryGenerator;
+import com.noarthedev.scaffold.template.generator.impl.*;
 import com.noarthedev.scaffold.template.lang.ProgrammingLangSyntax;
 
 import lombok.Data;
@@ -71,7 +69,7 @@ public class DatabaseSchema {
       
       //Helper.generateFile(tableSchema.controllerName(),FILE_EXTENSION, tableSchema.toRestController(frameworkInUse), String.format("%s/%s","generate","controller"));
 
-      CodeGenerator generator = new RepositoryGenerator(tableSchema, frameworkInUse, BASE_PACKAGE);
+      CodeGenerator generator = new ServiceGenerator(tableSchema, frameworkInUse, BASE_PACKAGE);
 
       System.out.println(generator.generate());
 
