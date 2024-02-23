@@ -9,15 +9,21 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public abstract class CodeGenerator {
-   private final TableSchema schema ;
-   private final String template;
+   protected final TableSchema schema ;
+   protected final Framework inUse;
+
+
+   protected abstract String getTemplates();
    
 
-   protected abstract String replacePlaceHolder(String template,String... placeHeloder);
+   protected  String replacePlaceHolder(String template,String... placeHeloder){
+      //TODO:
+      return null;
+   }
 
    protected abstract String importsToDo();
 
-   public String generate (Framework inUse){
+   public String generate (){
       
       //TODO:
       return null;

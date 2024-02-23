@@ -109,6 +109,11 @@ public class TableSchema {
     return temp.replace("[entityName]", entityName());
   }
 
+
+  public boolean isPrimaryKeyPresent(){
+    return primaryKey != null && !primaryKey.isEmpty();
+  }
+
   public String toRepository(Framework inUse) {
 
     inUse.getRepository().setTemplate(
