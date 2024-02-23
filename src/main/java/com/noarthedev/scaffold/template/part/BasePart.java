@@ -10,10 +10,14 @@ import lombok.Data;
 
 @Data
 public class BasePart {
+  
    protected ProgrammingLangSyntax pSyntax;
    protected final String CLASS_PART;
    protected String template;
+
+
    protected String[] imports;
+   
    protected String[] annotations;
    protected String inheritance;
    protected String methods;
@@ -85,5 +89,55 @@ public class BasePart {
       childPart.setImports(getImports());
       childPart.setTemplate(getTemplate());
    }
+
+
+   public String getInheritance(){
+      return defaultValue(this.inheritance);
+   }
+
+   public String getMethods(){
+      return defaultValue(this.methods);
+   }
+
+   public String getInjectionAnnotation(){
+      return defaultValue(this.injectionAnnotation);
+   }
+
+
+   public void setTemplate(Object obj){
+      this.template = stringNullityVerifier(obj);
+   }
+
+   public void setInheritance(Object obj){
+      this.inheritance = stringNullityVerifier(obj);
+   }
+
+   public void setMethods(Object obj){
+      this.methods = stringNullityVerifier(obj);
+   }
+
+   public void setInjectionAnnotation(Object obj){
+      this.injectionAnnotation = stringNullityVerifier(obj);
+   }
+
+
+   private String defaultValue(String string){
+      try {
+         String inheritance = string.equals("none")
+               ? ""
+               : string;
+
+         return inheritance;
+      } catch (NullPointerException e) {
+         return "";
+      }
+   }
+
+
+   private String stringNullityVerifier(Object obj){
+      if(obj==null) return "none";
+      return obj.toString();
+   }
+
 
 }

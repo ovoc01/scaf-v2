@@ -312,4 +312,12 @@ public class TableSchema {
 
     return sb.toString();
   }
+
+
+  public String tableNameToCamelCase(){
+    return Helper.toCamelCase(tableName);
+  }
+
+
+
 }
