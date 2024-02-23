@@ -1,20 +1,11 @@
-[package] 
+[package]
 [imports]
 
-?@[annotation]
+[annotation]
 [class-declaration] ##entityNameController [open-brackets]
+    ##injection-annotation
+    ##entityNameService ##tableNameService;
+    [controller-methods]
 
-    ##injectableFields
-
-    [get-method]
-    public ##returnType insert ()  [open-brackets]
-        ##returnType ##className = ##retrieveAll ;
-
-        return ##className;
-    [close-brackets]
-
-    [post-method]
-    public ##returnType create##entityName(##request-body ##class ##className)  [open-brackets]
-        
 
 [close-brackets]

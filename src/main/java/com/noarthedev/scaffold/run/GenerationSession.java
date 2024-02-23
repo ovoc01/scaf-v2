@@ -35,7 +35,7 @@ public class GenerationSession {
             .getResourceAsStream("configuration/framework/spring.properties"));
 
     
-    System.out.println(frameworkTemplate);
+    //System.out.println(frameworkTemplate);
     
     //TODO: prendre les informations en plus des templates (services,repository,controller)
     Map<String,String> extraTemplateInformation = null;

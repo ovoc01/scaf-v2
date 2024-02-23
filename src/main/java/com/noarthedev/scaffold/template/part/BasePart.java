@@ -17,6 +17,7 @@ public class BasePart {
    protected String[] annotations;
    protected String inheritance;
    protected String methods;
+   protected String injectionAnnotation;
    
 
    public BasePart(String part) {
@@ -36,7 +37,9 @@ public class BasePart {
       }catch(NullPointerException p){
          System.out.println(p);
       }
+      
 
+      //System.out.println(pSyntax.getLang());
       part.getTemplate(pSyntax.getLang());
       part.prepareTemplate();
 
@@ -53,9 +56,7 @@ public class BasePart {
    }
 
    public void getTemplate(String lang) {
-
       setTemplate(new Template().readTemplateAs(lang, CLASS_PART));
-     
    }
 
    public String importsToDo() {

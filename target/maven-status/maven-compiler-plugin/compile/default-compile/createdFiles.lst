@@ -14,4 +14,5 @@ com/noarthedev/scaffold/mapping/PrimaryKey.class
 com/noarthedev/scaffold/run/GenerationSession.class
 com/noarthedev/scaffold/template/part/RepositoryPart.class
 com/noarthedev/scaffold/mapping/Column.class
+com/noarthedev/scaffold/template/part/RestControllerPart.class
 com/noarthedev/scaffold/template/part/BasePart.class

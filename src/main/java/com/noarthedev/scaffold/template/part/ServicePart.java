@@ -24,6 +24,7 @@ public class ServicePart extends BasePart {
       final String partBegin = "##";
 
       BasePart pBasePart = super.fromFileContent(fileContent, pSyntax);
+      Map<String, Object> map = Helper.stringToMap(fileContent);
 
        servicePart.setMethods(
         Helper.retrieveFromString(
@@ -33,6 +34,7 @@ public class ServicePart extends BasePart {
             "service-methods"));
 
       
+      servicePart.setInjectionAnnotation(map.get("service.injection-annotation").toString());
       
 
       

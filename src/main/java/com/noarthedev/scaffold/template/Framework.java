@@ -6,6 +6,7 @@ import com.noarthedev.scaffold.helper.Helper;
 import com.noarthedev.scaffold.template.lang.ProgrammingLangSyntax;
 import com.noarthedev.scaffold.template.part.EntityPart;
 import com.noarthedev.scaffold.template.part.RepositoryPart;
+import com.noarthedev.scaffold.template.part.RestControllerPart;
 import com.noarthedev.scaffold.template.part.ServicePart;
 
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ public class Framework {
    EntityPart entity;
    RepositoryPart repository;
    ServicePart service;
+   RestControllerPart restControllerPart;
 
    public static Framework build(String fileContent, ProgrammingLangSyntax pSyntax) {
       Framework framework = new Framework();
@@ -39,6 +41,7 @@ public class Framework {
 
       framework.setService(new ServicePart().fromFileContent(fileContent, pSyntax));
       
+      framework.setRestControllerPart(new RestControllerPart().fromFileContent(fileContent, pSyntax));
       //System.out.println(framework.getEntity().getTemplate());
       return framework;
    }

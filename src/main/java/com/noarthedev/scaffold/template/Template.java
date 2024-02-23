@@ -17,7 +17,7 @@ public class Template {
         .getResourceAsStream(
             String.format("configuration/%s.temp", language));
 
-    System.out.println("atooo");
+    //System.out.println("atooo");
     String template = Helper.readInputStream(templateInputStream);
     String lang = Helper.readInputStream(langInputStream);
     Map<String, Object> map = Helper.stringToMap(lang);

@@ -4,12 +4,10 @@
 
 [annotation]
 [class-declaration] ##entityNameService ?[inheritance] [open-brackets]
-
+   ##injection-annotation
    ##entityNameRepository ##tableNameRepository;
- 
+
    [service-methods]
 
-
-[open-brackets]
 
 [close-brackets]
