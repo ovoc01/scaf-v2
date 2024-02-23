@@ -2,8 +2,8 @@
 
 [imports]
 
-?@[annotation]
-[class-declaration] [entityName] ?[inheritance] [open-brackets]
+[annotation]
+[class-declaration] [entityName] [inheritance] [open-brackets]
 
     @?[id-marks]
     ?[Id]

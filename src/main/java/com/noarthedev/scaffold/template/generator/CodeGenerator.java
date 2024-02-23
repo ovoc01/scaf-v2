@@ -43,8 +43,8 @@ public abstract class CodeGenerator {
       Map<String,String> placeholder = new HashMap<>();
 
       
-      placeholder.put("?@[annotation]", getAnnotations());
-      placeholder.put("?[inheritance]",inheritance());
+      placeholder.put("[annotation]", getAnnotations());
+      placeholder.put("[inheritance]",inheritance());
       placeholder.put("[imports]",importsToDo());
       placeholder.put("[package]",getPackageName());
       placeholder.put("[entityName]", schema.entityName());
@@ -59,8 +59,8 @@ public abstract class CodeGenerator {
 
       //TODO: update service, controller template to be able to render conditionally method that include primaryKey
 
-      placeholder.put("##primaryKeyType", schema.getPrimaryKey().get().getName());
-      placeholder.put("##primaryKeyName", schema.getPrimaryKey().get().getType());
+      placeholder.put("##primaryKeyType", schema.getPrimaryKey().get().getType());
+      placeholder.put("##primaryKeyName",schema.getPrimaryKey().get().getName() );
 
       
 

@@ -3,6 +3,6 @@
 [imports]
 
 [annotation]
-[interface-declaration] ##entityNameRepository ?[inheritance] [open-brackets]
+[interface-declaration] [entityName]Repository [inheritance] [open-brackets]
 
 [close-brackets]

@@ -6,8 +6,8 @@ import com.noarthedev.scaffold.template.generator.CodeGenerator;
 
 public class EntityGenerator extends CodeGenerator {
 
-   public EntityGenerator(TableSchema schema, Framework inUse,String pack) {
-      super(schema, inUse,pack);
+   public EntityGenerator(TableSchema schema, Framework inUse, String pack) {
+      super(schema, inUse, pack);
    }
 
    @Override
@@ -37,13 +37,15 @@ public class EntityGenerator extends CodeGenerator {
 
    @Override
    protected String getInjectionAnnotation() {
-      //Return an empty string because for now there is no Entity in our framework who need an field injection
+      // Return an empty string because for now there is no Entity in our framework
+      // who need an field injection
+      // FIXME: Later
       return "";
    }
 
    @Override
-   protected  String implementationOfExtraReplacement(String temp){
-      if(schema.isPrimaryKeyPresent()){
+   protected String implementationOfExtraReplacement(String temp) {
+      if (schema.isPrimaryKeyPresent()) {
          String idMarks = inUse.getPSyntax().getAnnotation().replace(":mark", inUse.getEntity().getIdMarks());
          temp = temp.replace("@?[id-marks]", idMarks);
          temp = temp.replace("?[Id]", schema.getPrimaryKey().get().toString());
