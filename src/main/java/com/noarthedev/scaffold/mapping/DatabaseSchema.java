@@ -1,6 +1,7 @@
 package com.noarthedev.scaffold.mapping;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -21,11 +22,11 @@ public class DatabaseSchema {
 
   List<TableSchema> tables;
 
-  public void toObject(Connection c, ProgrammingLangSyntax pLangSyntax, Framework frameworkInUse) throws SQLException, IOException {
-    final String ENTIY_PACKAGE = "com.noarthedev.scaffolding.entity";
-    final String BASE_PACKAGE = "com.noarthedev.scaffolding";
-    final String FILE_EXTENSION = "java";
-
+  public void toObject(Connection c, ProgrammingLangSyntax pLangSyntax, Framework frameworkInUse, String groupId,
+      String projectName,String fileToGenerate) throws SQLException {
+    final String BASE_PACKAGE = groupId;
+    final String FILE_EXTENSION = pLangSyntax.getFileExtension();
+    final String outputDir = String.format("%s/main/java/%s/%s/", projectName, groupId.replace(".", "/"), projectName);
 
     tables = new ArrayList<>();
     DatabaseMetaData databaseMetaData = c.getMetaData();
@@ -34,42 +35,46 @@ public class DatabaseSchema {
         null,
         null,
         new String[] { "TABLE" });
-    while (tablesResultSet.next()) {
-      TableSchema tableSchema = new TableSchema(tablesResultSet, pLangSyntax,ENTIY_PACKAGE,BASE_PACKAGE);
 
-      //System.out.println(tableSchema.getTableName());
-      ResultSet primaryKeysResultSet = databaseMetaData.getPrimaryKeys(
-          null,
-          null,
-          tableSchema.getTableName());
-      tableSchema.initOptionalPrimaryKey(primaryKeysResultSet);
+    try {
+      while (tablesResultSet.next()) {
+        TableSchema tableSchema = new TableSchema(tablesResultSet, pLangSyntax, null, null);
 
-      /*
-       * ResultSet foreignKeysResultSet = databaseMetaData.getImportedKeys(
-       * null,
-       * null,
-       * tableSchema.getTableName()
-       * );
-       */
+        // System.out.println(tableSchema.getTableName());
+        ResultSet primaryKeysResultSet = databaseMetaData.getPrimaryKeys(
+            null,
+            null,
+            tableSchema.getTableName());
+        tableSchema.initOptionalPrimaryKey(primaryKeysResultSet);
 
-      ResultSet otherColResultSet = databaseMetaData.getColumns(
-          null,
-          null,
-          tableSchema.getTableName(),
-          null);
+        ResultSet otherColResultSet = databaseMetaData.getColumns(
+            null,
+            null,
+            tableSchema.getTableName(),
+            null);
 
-      tableSchema.intOtherColumn(otherColResultSet);
+        tableSchema.intOtherColumn(otherColResultSet);
 
-      CodeGenerator generator = new RestControllerGenerator(tableSchema, frameworkInUse, BASE_PACKAGE);
+        ArrayList<CodeGenerator> toGenerate = CodeGenerator.generate(tableSchema, frameworkInUse, BASE_PACKAGE,
+            fileToGenerate);
 
-     Helper.generateFile(tableSchema.entityName(), FILE_EXTENSION, generator.generate(), "generate/entity");
+        if (!toGenerate.isEmpty()) {
+          for (CodeGenerator codeGenerator : toGenerate) {
+            Helper.generateFile(codeGenerator.getFileToGenerateName(), pLangSyntax.getFileExtension(),
+                codeGenerator.generate(), outputDir + codeGenerator.getType());
+          }
+        }
+        // generator = new RepositoryGenerator(tableSchema, frameworkInUse,
+        // BASE_PACKAGE);
 
-     //generator = new RepositoryGenerator(tableSchema, frameworkInUse, BASE_PACKAGE);
+        tables.add(tableSchema);
+        // break;
+      }
+    } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
+        | IllegalArgumentException | InvocationTargetException | SQLException | IOException e) {
 
-
-
-      tables.add(tableSchema);
-      //break;
+      e.printStackTrace();
     }
+
   }
 }

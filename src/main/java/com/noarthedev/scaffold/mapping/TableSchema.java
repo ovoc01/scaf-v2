@@ -63,54 +63,6 @@ public class TableSchema {
 
 
 
-  public String toRestController(Framework inUse){
-
-    inUse.getRestControllerPart().setTemplate(
-        inUse.getRestControllerPart()
-            .getTemplate()
-            .replace("[package]", pSyntax.getPackageName() + " " + REPO_PACKAGE + ";"));
-
-    String annotations = inUse.getRestControllerPart().entityAnnotations().isEmpty()
-        ? ""
-        : inUse.getRestControllerPart().entityAnnotations();
-    String inheritance = inUse.getRestControllerPart().getInheritance().equals("none")
-        ? ""
-        : pSyntax.getInheritance() + " " + inUse.getRestControllerPart().getInheritance();
-
-    inUse.getRestControllerPart().setTemplate(
-        inUse.getRestControllerPart()
-            .getTemplate()
-            .replace("?[inheritance]", inheritance));
-
-    inUse.getRestControllerPart().setTemplate(
-        inUse.getRestControllerPart()
-            .getTemplate()
-            .replace("[annotation]", annotations));
-
-    inUse.getRestControllerPart().setTemplate(
-      inUse.getRestControllerPart()
-            .getTemplate()
-            .replace("[controller-methods]", inUse.getRestControllerPart().getMethods())
-    );
-
-    String temp = inUse.getRestControllerPart().getTemplate();
-    String pkType = getPrimaryKey() != null ? getPrimaryKey().get().getType() : "Integer";
-
-    temp = temp.replace("##primaryKeyType", pkType);
-   
-    
-    
-    temp = temp.replace("[imports]", inUse.getRestControllerPart().importsToDo()
-        + String.format("\n%s %s.%s;", pSyntax.getImportName(),REPO_PACKAGE, serviceName()));
-
-    temp = temp.replace("##injection-annotation", String.format("%s", pSyntax.getAnnotation()).replace(":mark", inUse.getRestControllerPart().getInjectionAnnotation()));
-     temp = temp.replace("##entityName", entityName());
-    temp = temp.replace("##tableName", Helper.toCamelCase(getTableName()));
-
-
-     return temp;
-  }
-
   public String entityName() {
     return Helper.toPascalCase(tableName);
   }

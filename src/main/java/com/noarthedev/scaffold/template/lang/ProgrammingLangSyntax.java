@@ -28,6 +28,7 @@ public class ProgrammingLangSyntax {
   Map<String, DbField> dbType;
   String inheritance;
   String annotation;
+  String fileExtension;
 
   final String SYNTAX_CASE = "CAMEL_CASE";
 
@@ -52,6 +53,7 @@ public class ProgrammingLangSyntax {
     pgls.setCloseBrackets(dataMap.get("close-brackets").toString());
     pgls.setInheritance(dataMap.get("inheritance-syntax").toString());
     pgls.setAnnotation(dataMap.get("annotation-syntax").toString());
+    pgls.setFileExtension(dataMap.get("file-extension").toString());
 
     // initialize db type
 

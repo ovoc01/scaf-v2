@@ -1,5 +1,6 @@
 package com.noarthedev.scaffold.template.generator.impl;
 
+import com.noarthedev.scaffold.helper.Helper;
 import com.noarthedev.scaffold.mapping.TableSchema;
 import com.noarthedev.scaffold.template.Framework;
 import com.noarthedev.scaffold.template.generator.CodeGenerator;
@@ -7,7 +8,7 @@ import com.noarthedev.scaffold.template.generator.CodeGenerator;
 public class EntityGenerator extends CodeGenerator {
 
    public EntityGenerator(TableSchema schema, Framework inUse, String pack) {
-      super(schema, inUse, pack);
+      super(schema, inUse, pack,"entity");
    }
 
    @Override
@@ -55,6 +56,11 @@ public class EntityGenerator extends CodeGenerator {
       temp = temp.replace("[getters&&setters]", schema.allGetterAndSetters());
 
       return temp;
+   }
+
+   @Override
+   public String getFileToGenerateName(){
+      return String.format("%s", Helper.toPascalCase(schema.getTableName()));
    }
 
 }

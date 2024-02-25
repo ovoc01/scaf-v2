@@ -8,6 +8,7 @@ syntax-case=CAMEL_CASE
 inheritance-syntax=extends
 annotation-syntax=@:mark
 raise-exception=throws
+file-extension=java
 
 
 ##getters&&setters

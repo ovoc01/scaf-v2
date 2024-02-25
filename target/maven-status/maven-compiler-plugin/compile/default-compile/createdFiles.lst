@@ -8,6 +8,7 @@ com/noarthedev/scaffold/template/part/EntityPart.class
 com/noarthedev/scaffold/template/generator/impl/RestControllerGenerator.class
 com/noarthedev/scaffold/template/lang/ProgrammingLangSyntax.class
 com/noarthedev/scaffold/App.class
+com/noarthedev/scaffold/template/generator/CodeGenerator$1.class
 com/noarthedev/scaffold/mapping/DatabaseSchema.class
 com/noarthedev/scaffold/template/generator/impl/RepositoryGenerator.class
 com/noarthedev/scaffold/mapping/ForeignKey.class

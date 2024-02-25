@@ -6,7 +6,7 @@ close-brackets=}
 syntax-case=SNAKE_CASE
 inheritance-syntax=:
 annotation-syntax:[:mark]
-
+file-extension=csharp
 ##getters&&setters
    public ##argsType ##upperFieldName
    {

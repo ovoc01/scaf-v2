@@ -1,0 +1,1 @@
+spring init --build maven --description "Our first Spring Boot application"  --dependencies=web,data-jpa,postgresql --group-id com.theboreddev --java-version 17 spring-app

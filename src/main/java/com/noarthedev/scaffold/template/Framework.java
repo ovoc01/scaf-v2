@@ -22,10 +22,12 @@ public class Framework {
    ProgrammingLangSyntax pSyntax;
    String name;
    String[] fileGenerable;
+   String cliProjectGeneration;
    EntityPart entity;
    RepositoryPart repository;
    ServicePart service;
    RestControllerPart restControllerPart;
+
 
    public static Framework build(String fileContent, ProgrammingLangSyntax pSyntax) {
       Framework framework = new Framework();
@@ -34,8 +36,13 @@ public class Framework {
       //System.out.println("lang in use"+pSyntax);
       
       Map<String, Object> map = Helper.stringToMap(fileContent);
+
+      //System.out.println(fileContent);
       
+      
+      //System.out.println(map.get("cli-project-generation"));
       framework.retrieveFileGenerable(map.get("file-generable").toString());
+      framework.setCliProjectGeneration(map.get("cli-project-generation").toString());
       framework.setEntity(new EntityPart().fromFileContent(fileContent, pSyntax));
       framework.setRepository(new RepositoryPart().fromFileContent(fileContent, pSyntax));
 

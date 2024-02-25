@@ -1,6 +1,9 @@
 package com.noarthedev.scaffold.run;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -24,33 +27,49 @@ public class GenerationSession {
   final String USER = "postgres";
   final String PASSWORD = "pixel";
 
-  public void run(String outputDir) throws SQLException, IOException {
+  public void run(String buildTools, String lang, String framework, String groupId, String projectName,String fileToGenerate)
+      throws SQLException, IOException, InterruptedException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
     Connection c = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
     final String lang_template = Helper.readInputStream(
-        App.class.getClassLoader().getResourceAsStream("configuration/java.temp"));
-
+        App.class.getClassLoader().getResourceAsStream(String.format("configuration/%s.temp", lang)));
 
     final String frameworkTemplate = Helper.readInputStream(
         App.class.getClassLoader()
-            .getResourceAsStream("configuration/framework/spring.properties"));
+            .getResourceAsStream(String.format("configuration/framework/%s.properties", framework)));
 
-    
-    //System.out.println(frameworkTemplate);
-    
-    //TODO: prendre les informations en plus des templates (services,repository,controller)
-    Map<String,String> extraTemplateInformation = null;
+    // System.out.println(frameworkTemplate);
 
+    // TODO: prendre les informations en plus des templates
+    // (services,repository,controller)
+    Map<String, String> extraTemplateInformation = null;
 
     db = new DatabaseSchema();
     langInUse = new ProgrammingLangSyntax().build(lang_template);
-    langInUse.setLang("java");
+    langInUse.setLang(lang);
 
-    
-
-    
     frameworkInUse = Framework.build(frameworkTemplate, langInUse);
-    db.toObject(c, langInUse, frameworkInUse);
 
+    generateNewProject(frameworkInUse.getCliProjectGeneration(),projectName,groupId,buildTools);
+
+    db.toObject(c, langInUse, frameworkInUse, groupId, projectName,fileToGenerate);
+  }
+
+  public void generateNewProject(String command,String projectName,String groupId,String buildTools) throws IOException, InterruptedException {
+    command = command.replace("##build", buildTools).replace("##basePackage", groupId).replace("##projectName", projectName);
+    ProcessBuilder processBuilder = new ProcessBuilder();
+    processBuilder.command("bash", "-c", command);
+
+    Process process = processBuilder.start();
+
+    // Read output from the command
+    BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+    String line;
+    while ((line = reader.readLine()) != null) {
+      System.out.println(line);
+    }
+
+    int exitCode = process.waitFor();
+    System.out.println("Exited with error code " + exitCode);
 
   }
 }

@@ -16,6 +16,7 @@ import org.apache.commons.text.WordUtils;
 
 import com.google.googlejavaformat.java.Formatter;
 import com.google.googlejavaformat.java.FormatterException;
+import com.noarthedev.scaffold.template.Framework;
 
 public class Helper {
 
@@ -36,7 +37,9 @@ public class Helper {
     for (String line : lines) {
       // Split each line by '=' character
       String[] keyValue = line.split("=");
+      
       if (keyValue.length == 2) {
+       
         // Add key-value pair to the map
         map.put(keyValue[0].trim(), keyValue[1].trim());
       }
@@ -104,5 +107,11 @@ public class Helper {
     }
 
   }
+
+  public static boolean initSpringProject(String build,String groupId,String projectName,Framework inUse){
+    
+    return true;
+  }
+
 
 }

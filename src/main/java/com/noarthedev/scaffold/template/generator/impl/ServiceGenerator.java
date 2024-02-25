@@ -7,7 +7,7 @@ import com.noarthedev.scaffold.template.generator.CodeGenerator;
 public class ServiceGenerator extends CodeGenerator {
 
    public ServiceGenerator(TableSchema schema, Framework inUse, String BASE_PACKAGE) {
-      super(schema, inUse, BASE_PACKAGE);
+      super(schema, inUse, BASE_PACKAGE,"service");
    }
 
    @Override

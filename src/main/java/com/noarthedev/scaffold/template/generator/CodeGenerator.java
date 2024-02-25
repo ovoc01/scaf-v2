@@ -1,10 +1,18 @@
 package com.noarthedev.scaffold.template.generator;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.noarthedev.scaffold.helper.Helper;
 import com.noarthedev.scaffold.mapping.TableSchema;
 import com.noarthedev.scaffold.template.Framework;
+import com.noarthedev.scaffold.template.generator.impl.EntityGenerator;
+import com.noarthedev.scaffold.template.generator.impl.RepositoryGenerator;
+import com.noarthedev.scaffold.template.generator.impl.RestControllerGenerator;
+import com.noarthedev.scaffold.template.generator.impl.ServiceGenerator;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +23,16 @@ public abstract class CodeGenerator {
    protected final TableSchema schema;
    protected final Framework inUse;
    protected final String BASE_PACKAGE;
+   protected final String type;
+
+   private static final HashMap<String, Class<? extends CodeGenerator>> matching = new HashMap<>() {
+      {
+         put("entity", EntityGenerator.class);
+         put("repository", RepositoryGenerator.class);
+         put("service", ServiceGenerator.class);
+         put("rest-controller", RestControllerGenerator.class);
+      }
+   };
 
    protected abstract String getTemplates();
 
@@ -68,6 +86,32 @@ public abstract class CodeGenerator {
       if (val == null || val.isEmpty() || val.equals("none"))
          return "";
       return String.format("%s %s", inUse.getPSyntax().getInheritance(), val);
+   }
+
+   public static ArrayList<CodeGenerator> generate(TableSchema schema, Framework framework, String basePackage,
+         String fileToGenerate) throws NoSuchMethodException, SecurityException, InstantiationException,
+         IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+      String[] fileToGen = fileToGenerate.trim().split(",");
+      ArrayList<CodeGenerator> toGenerate = new ArrayList<>();
+      int count = 0;
+      for (String file : fileToGen) {
+         Class<? extends CodeGenerator> clz = matching.get(file);
+         if (clz != null) {
+            Constructor<?> constructor = clz.getConstructor(TableSchema.class, Framework.class, String.class);
+            CodeGenerator codeGenerator = (CodeGenerator) constructor.newInstance(schema, framework, basePackage);
+            toGenerate.add(codeGenerator);
+            count++;
+         }
+      }
+
+      if (count == 0)
+         throw new IllegalArgumentException("Unable to  generate file");
+      
+      return toGenerate;
+   }
+
+   public String getFileToGenerateName(){
+      return String.format("%s", Helper.toPascalCase(schema.getTableName())+Helper.toPascalCase(type));
    }
 
 }
