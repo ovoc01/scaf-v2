@@ -18,6 +18,7 @@ com/noarthedev/scaffold/template/lang/DbField.class
 com/noarthedev/scaffold/template/generator/TemplateHelper.class
 com/noarthedev/scaffold/mapping/PrimaryKey.class
 com/noarthedev/scaffold/run/GenerationSession.class
+com/noarthedev/scaffold/props/ScaffoldProps.class
 com/noarthedev/scaffold/template/part/RepositoryPart.class
 com/noarthedev/scaffold/template/generator/CodeGenerator.class
 com/noarthedev/scaffold/mapping/Column.class

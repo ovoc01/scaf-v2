@@ -26,7 +26,7 @@ public class DatabaseSchema {
       String projectName,String fileToGenerate) throws SQLException {
     final String BASE_PACKAGE = groupId;
     final String FILE_EXTENSION = pLangSyntax.getFileExtension();
-    final String outputDir = String.format("%s/main/java/%s/%s/", projectName, groupId.replace(".", "/"), projectName);
+    final String outputDir = String.format("%s/src/main/java/%s/%s/", projectName, groupId.replace(".", "/"), projectName);
 
     tables = new ArrayList<>();
     DatabaseMetaData databaseMetaData = c.getMetaData();

@@ -92,6 +92,9 @@ public abstract class CodeGenerator {
          String fileToGenerate) throws NoSuchMethodException, SecurityException, InstantiationException,
          IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       String[] fileToGen = fileToGenerate.trim().split(",");
+
+      //FIXME: Check if duplicate fileToGen
+      
       ArrayList<CodeGenerator> toGenerate = new ArrayList<>();
       int count = 0;
       for (String file : fileToGen) {

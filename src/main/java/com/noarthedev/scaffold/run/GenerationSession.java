@@ -12,6 +12,7 @@ import java.util.Map;
 import com.noarthedev.scaffold.App;
 import com.noarthedev.scaffold.helper.Helper;
 import com.noarthedev.scaffold.mapping.DatabaseSchema;
+import com.noarthedev.scaffold.props.ScaffoldProps;
 import com.noarthedev.scaffold.template.Framework;
 import com.noarthedev.scaffold.template.lang.ProgrammingLangSyntax;
 
@@ -23,19 +24,17 @@ public class GenerationSession {
   ProgrammingLangSyntax langInUse;
   Framework frameworkInUse;
   DatabaseSchema db;
-  final String JDBC_URL = "jdbc:postgresql://localhost:5432/panneau";
-  final String USER = "postgres";
-  final String PASSWORD = "pixel";
+  
 
-  public void run(String buildTools, String lang, String framework, String groupId, String projectName,String fileToGenerate)
+  public void run(ScaffoldProps props)
       throws SQLException, IOException, InterruptedException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-    Connection c = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+    Connection c = DriverManager.getConnection(props.getUrl(), props.getUser(), props.getPwd());
     final String lang_template = Helper.readInputStream(
-        App.class.getClassLoader().getResourceAsStream(String.format("configuration/%s.temp", lang)));
+        App.class.getClassLoader().getResourceAsStream(String.format("configuration/%s.temp", props.getLang())));
 
     final String frameworkTemplate = Helper.readInputStream(
         App.class.getClassLoader()
-            .getResourceAsStream(String.format("configuration/framework/%s.properties", framework)));
+            .getResourceAsStream(String.format("configuration/framework/%s.properties", props.getFramework())));
 
     // System.out.println(frameworkTemplate);
 
@@ -45,19 +44,24 @@ public class GenerationSession {
 
     db = new DatabaseSchema();
     langInUse = new ProgrammingLangSyntax().build(lang_template);
-    langInUse.setLang(lang);
+    langInUse.setLang(props.getLang());
 
     frameworkInUse = Framework.build(frameworkTemplate, langInUse);
 
-    generateNewProject(frameworkInUse.getCliProjectGeneration(),projectName,groupId,buildTools);
-
-    db.toObject(c, langInUse, frameworkInUse, groupId, projectName,fileToGenerate);
+    generateNewProject(frameworkInUse.getCliProjectGeneration(),props.getProjectName(),props.getGroupId(),props.getBuild());
+    db.toObject(c, langInUse, frameworkInUse, props.getGroupId(), props.getProjectName(),props.getFileToGenerate());
   }
 
   public void generateNewProject(String command,String projectName,String groupId,String buildTools) throws IOException, InterruptedException {
     command = command.replace("##build", buildTools).replace("##basePackage", groupId).replace("##projectName", projectName);
     ProcessBuilder processBuilder = new ProcessBuilder();
-    processBuilder.command("bash", "-c", command);
+    boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
+    if (isWindows) {
+        processBuilder.command("cmd", "/c", command);
+    } else {
+        processBuilder.command("bash", "-c", command);
+    }
+   
 
     Process process = processBuilder.start();
 
