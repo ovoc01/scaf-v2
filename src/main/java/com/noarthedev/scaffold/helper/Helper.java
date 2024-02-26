@@ -3,13 +3,19 @@ package com.noarthedev.scaffold.helper;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.text.CaseUtils;
 import org.apache.commons.text.WordUtils;
@@ -109,9 +115,56 @@ public class Helper {
   }
 
   public static boolean initSpringProject(String build,String groupId,String projectName,Framework inUse){
-    
     return true;
   }
 
+  public static void zipDirectory(File dir, String zipDirName) throws IOException{
+      if(!dir.isDirectory()) throw new IllegalStateException("File must be a directory");
+      List<String> filesListInDir = new ArrayList<>();
+      populateFilesList(dir,filesListInDir);
+      
+      try { 
+            //now zip files one by one
+            //create ZipOutputStream to write to the zip file
+            FileOutputStream fos = new FileOutputStream(zipDirName);
+            ZipOutputStream zos = new ZipOutputStream(fos);
+            for(String filePath : filesListInDir){
+                System.out.println("Zipping "+filePath);
+                //for ZipEntry we need to keep only relative file path, so we used substring on absolute path
+                ZipEntry ze = new ZipEntry(filePath.substring(dir.getAbsolutePath().length()+1, filePath.length()));
+                zos.putNextEntry(ze);
+                //read the file and write to ZipOutputStream
+                FileInputStream fis = new FileInputStream(filePath);
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((len = fis.read(buffer)) > 0) {
+                    zos.write(buffer, 0, len);
+                }
+                zos.closeEntry();
+                fis.close();
+            }
+            zos.close();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+  }
+
+  /**
+     * This method populates all the files in a directory to a List
+     * @param dir
+     * @throws IOException
+     */
+    private static void populateFilesList(File dir,List<String> filesListInDir) throws IOException {
+      
+      File[] files = dir.listFiles();
+      //System.out.println(files);
+      
+      for(File file : files){
+          if(file.isFile()) filesListInDir.add(file.getAbsolutePath());
+          else populateFilesList(file,filesListInDir);
+      }
+      
+  }
 
 }

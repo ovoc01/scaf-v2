@@ -88,13 +88,14 @@ public abstract class CodeGenerator {
       return String.format("%s %s", inUse.getPSyntax().getInheritance(), val);
    }
 
+   
    public static ArrayList<CodeGenerator> generate(TableSchema schema, Framework framework, String basePackage,
          String fileToGenerate) throws NoSuchMethodException, SecurityException, InstantiationException,
          IllegalAccessException, IllegalArgumentException, InvocationTargetException {
       String[] fileToGen = fileToGenerate.trim().split(",");
 
-      //FIXME: Check if duplicate fileToGen
-      
+      // FIXME: Check if duplicate fileToGen
+
       ArrayList<CodeGenerator> toGenerate = new ArrayList<>();
       int count = 0;
       for (String file : fileToGen) {
@@ -109,12 +110,12 @@ public abstract class CodeGenerator {
 
       if (count == 0)
          throw new IllegalArgumentException("Unable to  generate file");
-      
+
       return toGenerate;
    }
 
-   public String getFileToGenerateName(){
-      return String.format("%s", Helper.toPascalCase(schema.getTableName())+Helper.toPascalCase(type));
+   public String getFileToGenerateName() {
+      return String.format("%s", Helper.toPascalCase(schema.getTableName()) + Helper.toPascalCase(type));
    }
 
 }
