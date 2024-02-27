@@ -12,7 +12,6 @@ import java.util.List;
 import com.noarthedev.scaffold.helper.Helper;
 import com.noarthedev.scaffold.template.Framework;
 import com.noarthedev.scaffold.template.generator.CodeGenerator;
-import com.noarthedev.scaffold.template.generator.impl.*;
 import com.noarthedev.scaffold.template.lang.ProgrammingLangSyntax;
 
 import lombok.Data;

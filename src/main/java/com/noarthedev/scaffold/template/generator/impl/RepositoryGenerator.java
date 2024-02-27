@@ -8,7 +8,6 @@ public class RepositoryGenerator extends CodeGenerator {
 
    public RepositoryGenerator(TableSchema schema, Framework inUse, String BASE_PACKAGE) {
       super(schema, inUse, BASE_PACKAGE,"repository");
-
    }
 
    @Override
@@ -19,7 +18,6 @@ public class RepositoryGenerator extends CodeGenerator {
    @Override
    protected String importsToDo() {
 
-      
       StringBuilder sb = new StringBuilder();
       sb.append(inUse.getRepository().importsToDo()).append("\n");
       sb.append("import " + BASE_PACKAGE + ".entity.").append(schema.entityName()).append(";");
@@ -31,8 +29,6 @@ public class RepositoryGenerator extends CodeGenerator {
    protected String getPackageName() {
       return String.format("%s %s.repository;",inUse.getPSyntax().getPackageName(), BASE_PACKAGE);
    }
-
-   
 
    @Override
    protected String getAnnotations() {

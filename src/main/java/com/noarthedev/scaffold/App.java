@@ -1,16 +1,11 @@
 package com.noarthedev.scaffold;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-import java.util.concurrent.Future;
-
-import org.eclipse.jetty.server.Authentication.User;
 
 import com.google.gson.Gson;
 import com.noarthedev.scaffold.helper.Helper;
@@ -21,44 +16,40 @@ import static spark.Spark.*;
 public class App {
 
     public static void main(String[] args)
-            throws SQLException, IOException, InterruptedException, NoSuchMethodException, SecurityException,
-            InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+            throws  SecurityException, IllegalArgumentException{
 
         String fileToGenerate = "entity,repository";
         final String JDBC_URL = "jdbc:postgresql://localhost:5432/panneau";
         final String USER = "postgres";
         final String PASSWORD = "pixel";
-        // new GenerationSession().run("maven", "java", "spring",
-        // "com.noarthedev.panneausolaire",
-        // "panneausolaire",fileToGenerate,JDBC_URL,USER,PASSWORD);
 
-        // Language , Framework , DatabaseConnection , FileToGenerate,
 
-        // port(1234);
-        before((req, res) -> {
-            res.header("Access-Control-Allow-Origin", "*"); // Allow requests from any
-            res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"); // Allow specific methods
-            res.header("Access-Control-Allow-Headers", "Content-Type, Authorization"); // Allow specific headers
-        });
+        enableCORS("*", "*", "*", "*");
 
         get("/hello", (req, res) -> "Hello, world");
 
         post("/skfflod", (request, response) -> {
+            System.out.println("atoo");
             response.type("application/json");
             ScaffoldProps sProps = new Gson().fromJson(request.body(), ScaffoldProps.class);
             new GenerationSession().run(sProps);
-            File f = new File(sProps.getProjectName());
 
-            Helper.zipDirectory(f, String.format("%s.zip", sProps.getProjectName()));
-            File file = new File(String.format("%s.zip", sProps.getProjectName()));
-            if (file.exists()) {
-                response.type("application/octet-stream");
-                response.header("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"");
-                response.status(201);
+            File projectDirectory = new File(sProps.getProjectName());
+
+
+            String zipFileName = sProps.getProjectName() + ".zip";
+            Helper.zipDirectory(projectDirectory, zipFileName);
+            File zipFile = new File(zipFileName);
+
+            if (zipFile.exists()) {
+                response.type("application/zip");
+                response.status(200);
 
                 // Write the file content to the response output stream
+                response.header("Content-Disposition", "attachment; filename=\"" + zipFileName + "\"");
+
                 try (OutputStream outputStream = response.raw().getOutputStream();
-                        FileInputStream fileInputStream = new FileInputStream(file)) {
+                        FileInputStream fileInputStream = new FileInputStream(zipFile)) {
                     byte[] buffer = new byte[4096];
                     int length;
                     while ((length = fileInputStream.read(buffer)) != -1) {
@@ -71,7 +62,7 @@ public class App {
                     return "Internal Server Error";
                 }
 
-                return response.raw();
+                return null;
             } else {
                 response.status(404);
                 return "File Not Found";
@@ -79,27 +70,31 @@ public class App {
         });
 
 
-        /*
-         * before((req, res) -> {
-         * res.header("Access-Control-Allow-Origin", "*"); // Allow requests from any
-         * origin
-         * res.header("Access-Control-Allow-Methods",
-         * "GET, POST, PUT, DELETE, OPTIONS"); // Allow specific methods
-         * res.header("Access-Control-Allow-Headers", "Content-Type, Authorization"); //
-         * Allow specific headers
-         * });
-         * 
-         * exception(Exception.class, (e,req,res)->{
-         * e.printStackTrace();
-         * });
-         * 
-         * get("/hello", (req, res) -> "Hello, world");
-         * 
-         * get("/hello/:name", (req, res) -> {
-         * //req.body();
-         * return "Hello, " + req.params(":name");
-         * });
-         */
 
+    }
+
+    private static void enableCORS(final String origin, final String methods, final String headers,
+            final String exposedHeaders) {
+        options("/*", (request, response) -> {
+            String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
+            if (accessControlRequestHeaders != null) {
+                response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
+            }
+
+            String accessControlRequestMethod = request.headers("Access-Control-Request-Method");
+            if (accessControlRequestMethod != null) {
+                response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
+            }
+
+            return "OK";
+        });
+
+        before((request, response) -> {
+            response.header("Access-Control-Allow-Origin", origin);
+            response.header("Access-Control-Allow-Methods", methods);
+            response.header("Access-Control-Allow-Headers", headers);
+            response.header("Access-Control-Expose-Headers", exposedHeaders);
+            response.header("Access-Control-Allow-Credentials", "true");
+        });
     }
 }
