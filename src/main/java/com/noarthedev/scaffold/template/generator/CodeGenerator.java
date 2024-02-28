@@ -61,8 +61,14 @@ public abstract class CodeGenerator {
       placeholder.put("[package]", getPackageName());
       placeholder.put("[entityName]", schema.entityName());
       placeholder.put("[tableName]", schema.tableNameToCamelCase());
+      placeholder.put("[primaryKeyColName]",schema.getPrimaryKey().get().getName());
 
-      placeholder.put("##injection-annotation", getInjectionAnnotation());
+      if(inUse.getRestController().getInjectionAnnotation().isEmpty()){
+         placeholder.put("[injection]","");
+      }else{
+         placeholder.put("[injection]",getInjectionAnnotation());
+      }
+
 
       // Optional may throws an exception in case that the table may not have a
       // primary key

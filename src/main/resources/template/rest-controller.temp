@@ -3,10 +3,8 @@
 [imports]
 
 [annotation]
-[class-declaration] [entityName]Controller [open-brackets]
-    ##injection-annotation
-    [entityName]Service [tableName]Service;
-    
+[class-declaration] [entityName]Controller [inheritance] [open-brackets]
+    [injection]
     [controller-methods]
 
 [close-brackets]

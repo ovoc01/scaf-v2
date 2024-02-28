@@ -26,8 +26,8 @@ public class GenerationSession {
   DatabaseSchema db;
 
   public void run(ScaffoldProps props)
-      throws SQLException, IOException, InterruptedException, NoSuchMethodException, SecurityException,
-      InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+          throws SQLException, IOException, InterruptedException, NoSuchMethodException, SecurityException,
+          InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException {
         
     Connection c = DriverManager.getConnection(props.getUrl(), props.getUser(), props.getPwd());
     final String lang_template = Helper.readInputStream(
@@ -48,10 +48,15 @@ public class GenerationSession {
     langInUse.setLang(props.getLang());
 
     frameworkInUse = Framework.build(frameworkTemplate, langInUse);
+    
+    boolean isCliGenerationPresent = frameworkInUse.getCliProjectGeneration().equals("none");
+    System.out.println(isCliGenerationPresent);
+    if(isCliGenerationPresent){
+      generateNewProject(frameworkInUse.getCliProjectGeneration(), props.getProjectName(), props.getGroupId(),
+          props.getBuild());
+    }
 
-    generateNewProject(frameworkInUse.getCliProjectGeneration(), props.getProjectName(), props.getGroupId(),
-        props.getBuild());
-    db.toObject(c, langInUse, frameworkInUse, props.getGroupId(), props.getProjectName(), props.getFileToGenerate());
+    db.toObject(c, langInUse, frameworkInUse, props.getGroupId(), props.getProjectName(), props.getFileToGenerate(),isCliGenerationPresent);
   }
 
   public void generateNewProject(String command, String projectName, String groupId, String buildTools)

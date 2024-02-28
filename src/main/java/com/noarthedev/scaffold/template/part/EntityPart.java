@@ -13,50 +13,69 @@ import lombok.Setter;
 @Getter
 @Setter
 public class EntityPart extends BasePart {
-   String idMarks;
-   String columnMark;
+    String idMarks;
+    String columnMark;
 
-   public EntityPart() {
-      super("entity");
-   }
+    public EntityPart() {
+        super("entity");
+    }
 
-   @Override
-   public EntityPart fromFileContent(String fileContent, ProgrammingLangSyntax pSyntax) {
-      EntityPart part = new EntityPart();
-      part.setPSyntax(pSyntax);
+    @Override
+    public EntityPart fromFileContent(String fileContent, ProgrammingLangSyntax pSyntax) {
+        EntityPart part = new EntityPart();
+        part.setPSyntax(pSyntax);
 
-      //
-      BasePart basePart = super.fromFileContent(fileContent, pSyntax);
-      Map<String, Object> map = Helper.stringToMap(fileContent);
+        final String partEnd = "!!";
+        final String partBegin = "##";
+        //
+        BasePart basePart = super.fromFileContent(fileContent, pSyntax);
+        Map<String, Object> map = Helper.stringToMap(fileContent);
 
-      
-      basePart.completeChild(part);
+
+        part.setMethods(
+                Helper.retrieveFromString(
+                        fileContent,
+                        partBegin,
+                        partEnd,
+                        "noArgsConstructor")
+        );
 
 
-      part.setIdMarks(Optional.ofNullable(map.get("entity.id-marks")).orElse("").toString());
-      part.setColumnMark(map.get("entity.column-mark").toString());
+        part.setIdMarks(map.get("entity.id-marks"));
+        part.setColumnMark(map.get("entity.column-mark").toString());
+        basePart.completeChild(part);
 
-      return part;
-   }
+        return part;
+    }
 
-   public String importsToDo() {
-      StringBuilder sb = new StringBuilder();
-      for (String d : imports) {
+    public void setIdMarks(Object object) {
+        System.out.println("eto asika " + object);
+        if (object == null) this.idMarks = "";
 
-         sb.append(pSyntax.getImportName() + " " + d + ";").append("\n");
-      }
-      sb.deleteCharAt(sb.length() - 1);
-      return sb.toString();
-   }
+        this.idMarks = object.toString();
+    }
 
-   public String entityAnnotations() {
-      StringBuilder sb = new StringBuilder();
-      for (String a : annotations) {
-         String column = pSyntax.getAnnotation().replace(":mark", a);
-         sb.append(column).append("\n");
-      }
 
-      return sb.toString();
-   }
+    public String importsToDo() {
+        StringBuilder sb = new StringBuilder();
+        for (String d : imports) {
+
+            sb.append(pSyntax.getImportName() + " " + d + ";").append("\n");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        return sb.toString();
+    }
+
+    public String entityAnnotations() {
+        StringBuilder sb = new StringBuilder();
+        for (String a : annotations) {
+            if (!a.equals("none")) {
+                String column = pSyntax.getAnnotation().replace(":mark", a);
+                sb.append(column).append("\n");
+            }
+        }
+
+        return sb.toString();
+    }
 
 }

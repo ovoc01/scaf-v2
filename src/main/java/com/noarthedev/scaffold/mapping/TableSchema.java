@@ -86,7 +86,10 @@ public class TableSchema {
     List<Column> real = realCol();
     for (Column col : real) {
       if (!col.equals(primaryKey.get())) {
-        String coln = marks.replace(":mark", inUse.getEntity().getColumnMark());
+        String coln = "";
+        if(!inUse.getEntity().getColumnMark().equals("none")) {
+          coln = marks.replace(":mark", inUse.getEntity().getColumnMark());
+        }
         if (a > 0) {
           sb.append(Helper.identation());
         }
@@ -137,7 +140,4 @@ public class TableSchema {
   public String tableNameToCamelCase(){
     return Helper.toCamelCase(tableName);
   }
-
-
-
 }

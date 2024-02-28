@@ -22,10 +22,12 @@ public class DatabaseSchema {
   List<TableSchema> tables;
 
   public void toObject(Connection c, ProgrammingLangSyntax pLangSyntax, Framework frameworkInUse, String groupId,
-      String projectName,String fileToGenerate) throws SQLException {
+      String projectName,String fileToGenerate,boolean isCliGenerationPresent) throws SQLException {
     final String BASE_PACKAGE = groupId;
     final String FILE_EXTENSION = pLangSyntax.getFileExtension();
-    final String outputDir = String.format("%s/src/main/java/%s/%s/", projectName, groupId.replace(".", "/"), projectName);
+    String outputDir = "";
+    if(!isCliGenerationPresent)outputDir = String.format("%s/src/main/java/%s/%s/", projectName, groupId.replace(".", "/"), projectName);
+    else outputDir = String.format("%s/", projectName);
 
     tables = new ArrayList<>();
     DatabaseMetaData databaseMetaData = c.getMetaData();

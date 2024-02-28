@@ -4,13 +4,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.sql.SQLException;
 
 import com.google.gson.Gson;
 import com.noarthedev.scaffold.helper.Helper;
 import com.noarthedev.scaffold.props.ScaffoldProps;
 import com.noarthedev.scaffold.run.GenerationSession;
+import org.slf4j.ILoggerFactory;
+
 import static spark.Spark.*;
 
 public class App {
@@ -57,7 +57,6 @@ public class App {
                     }
                     outputStream.flush();
                 } catch (IOException e) {
-                    e.printStackTrace();
                     response.status(500);
                     return "Internal Server Error";
                 }
