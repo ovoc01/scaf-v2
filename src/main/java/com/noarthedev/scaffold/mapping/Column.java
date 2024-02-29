@@ -23,6 +23,7 @@ public class Column {
     DbField dB = dbField.get(rs.getString("TYPE_NAME"));
     // System.out.println(rs.getString("TYPE_NAME"));
     setType(dB.getName());
+
     setImportToDo(dB.getImports() == null ? null : dB.getImports().get());
     // System.out.println(getType());
   }

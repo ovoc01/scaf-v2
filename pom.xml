@@ -32,11 +32,11 @@
       <artifactId>spark-core</artifactId>
       <version>2.9.4</version>
   </dependency>
-  <dependency> 
-    <groupId>org.slf4j</groupId> 
-    <artifactId>slf4j-simple</artifactId> 
-    <version>1.7.21</version> 
-  </dependency> 
+  <dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>slf4j-simple</artifactId>
+    <version>1.7.21</version>
+  </dependency>
 
   <dependency>
     <groupId>com.google.code.gson</groupId>
@@ -48,7 +48,7 @@
   <artifactId>gson</artifactId>
   <version>2.10.1</version>
 </dependency>
-    
+
 
 
     <dependency>
@@ -140,6 +140,21 @@
             <mainClass>com.noarthedev.scaffold.App</mainClass>
           </configuration>
         </plugin>
+         <plugin>
+      <!-- Build an executable JAR -->
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-jar-plugin</artifactId>
+      <version>3.1.0</version>
+      <configuration>
+        <archive>
+          <manifest>
+            <addClasspath>true</addClasspath>
+            <classpathPrefix>lib/</classpathPrefix>
+            <mainClass>com.noarthedev.scaffold.App</mainClass>
+          </manifest>
+        </archive>
+      </configuration>
+    </plugin>
       </plugins>
     </pluginManagement>
   </build>

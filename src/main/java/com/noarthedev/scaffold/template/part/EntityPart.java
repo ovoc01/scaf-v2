@@ -59,11 +59,23 @@ public class EntityPart extends BasePart {
     public String importsToDo() {
         StringBuilder sb = new StringBuilder();
         for (String d : imports) {
-
             sb.append(pSyntax.getImportName() + " " + d + ";").append("\n");
         }
         sb.deleteCharAt(sb.length() - 1);
         return sb.toString();
+    }
+
+
+    public String importsToDo(String extraImport){
+        StringBuilder sb = new StringBuilder();
+        String[] imports = extraImport.split(",");
+
+        for (String d : imports) {
+            sb.append(pSyntax.getImportName() + " " + d + ";").append("\n");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+
+        return importsToDo()+"\n"+sb.toString();
     }
 
     public String entityAnnotations() {

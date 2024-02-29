@@ -13,6 +13,10 @@ public class EntityGenerator extends CodeGenerator {
 
    @Override
    protected String importsToDo() {
+       String importNeed = schema.columnImports();
+       if(importNeed!=null && !importNeed.isEmpty()){
+              return inUse.getEntity().importsToDo(importNeed);
+       }
       return inUse.getEntity().importsToDo();
    }
 

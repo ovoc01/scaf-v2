@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.noarthedev.scaffold.helper.Helper;
 import com.noarthedev.scaffold.template.Framework;
@@ -131,9 +133,21 @@ public class TableSchema {
   }
 
   public String columnImports() {
-    StringBuilder sb = new StringBuilder();
+      StringBuilder sb = new StringBuilder();
+      Set<String> importedColumns = new HashSet<>(); // Set to track duplicate strings
 
-    return sb.toString();
+      for (Column col : columns) {
+          if (col.getImportToDo() != null && !importedColumns.contains(col.getImportToDo())) {
+              sb.append(col.getImportToDo()).append(",");
+              importedColumns.add(col.getImportToDo());
+          }
+      }
+
+      if (sb.length() > 0) {
+          sb.setLength(sb.length() - 1); // Remove the last comma
+      }
+
+      return sb.toString();
   }
 
 
