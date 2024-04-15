@@ -82,7 +82,7 @@ public class DatabaseSchema {
           }
         }
 
-        Helper.generateFile(String.format("%s", tableSchema.getTableName()), "vue", tableSchema.generateView(), outputDir);
+        Helper.generateFile(String.format("%s", Helper.toPascalCase(tableSchema.getTableName())), "vue", tableSchema.generateView(), outputDir);
 
         // generator = new RepositoryGenerator(tableSchema, frameworkInUse,
         // BASE_PACKAGE);
