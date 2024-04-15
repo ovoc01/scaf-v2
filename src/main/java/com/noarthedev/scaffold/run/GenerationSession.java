@@ -1,5 +1,6 @@
 package com.noarthedev.scaffold.run;
 
+import com.google.googlejavaformat.java.FormatterException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,7 +28,7 @@ public class GenerationSession {
 
   public void run(ScaffoldProps props)
           throws SQLException, IOException, InterruptedException, NoSuchMethodException, SecurityException,
-          InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException {
+          InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException, FormatterException {
 
     Connection c = DriverManager.getConnection(props.getUrl(), props.getUser(), props.getPwd());
     final String lang_template = Helper.readInputStream(

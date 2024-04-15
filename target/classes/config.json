@@ -1,0 +1,8 @@
+{
+    "RequestBody": "@field: this.@field,",
+    "Empty": "@field: '',",
+    "Initialisation": "this.@field = ''",
+    "HeadersTable": "<th>@label</th>",
+    "TableContent": "<th>{{ @tableName.@field }}</th>",
+    "ItemInitialisation": "this.@field = item.@field"
+}

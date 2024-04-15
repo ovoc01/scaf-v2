@@ -1,19 +1,33 @@
 package com.noarthedev.scaffold.mapping;
 
+import com.formulaire.Formulaire;
+import com.formulaire.Template;
+import com.formulaire.component.Champ;
+import com.formulaire.component.Input;
+import com.google.googlejavaformat.java.FormatterException;
+import com.google.gson.Gson;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-
 import com.noarthedev.scaffold.helper.Helper;
 import com.noarthedev.scaffold.mapping.keys.ExportedKey;
 import com.noarthedev.scaffold.mapping.keys.ImportedKey;
 import com.noarthedev.scaffold.template.Framework;
 import com.noarthedev.scaffold.template.lang.ProgrammingLangSyntax;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
+import java.util.Map;
+import com.google.gson.reflect.TypeToken;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.net.URL;
 
 import lombok.Data;
 
@@ -269,4 +283,76 @@ public class TableSchema {
         int val = (let.length() / 2);
         return let.substring(0, Math.min(val, 3)).toUpperCase();
     }
+    
+    public Formulaire createFormulaire() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException {
+          List<Column> columns = this.realCol();
+          Champ[] champs = new Champ[columns.size()];
+          
+          if (columns.size() == 0) 
+              throw new IllegalArgumentException("No argument in obj");
+          
+          Template template = new Template().createTemplate("template/config.properties");
+          for (int i = 0; i < columns.size(); i++) {
+              champs[i] = new Champ();
+              
+              String label = Champ.toUpperCasefisrtLetter(columns.get(i).getNameToCamelCase());
+              champs[i].setLabel(label);
+              
+              Input input = new Input(columns.get(i).getNameToCamelCase(), "", "", champs[i].getType(columns.get(i).getType()), "");
+              input.setTemplate(template.getInput());
+              champs[i].setInput(input);
+          }
+          
+          Formulaire formulaire = new Formulaire();
+          formulaire.setListeChamp(champs);
+          formulaire.setObj(this);
+          formulaire.setTemplate(template.getFormulaire());
+          return formulaire;
+      }
+    
+      public static Map<String, String> getCongig() {
+          Type type = new TypeToken<Map<String, String>>(){}.getType();
+          Gson gson = new Gson();
+          URL root = Thread.currentThread().getContextClassLoader().getResource("config.json");
+          StringBuilder result = new StringBuilder();
+          try {
+              BufferedReader reader = new BufferedReader(new FileReader(root.getFile()));
+              String line;
+              while ((line = reader.readLine()) != null) {
+                  result.append(line);
+              }
+              reader.close();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+          return gson.fromJson(result.toString(), type);
+      }
+    
+      public String generateChamp(String type) {
+          Map<String, String> configs = getCongig();
+          String template = configs.get(type);
+          StringBuilder stringBuilder = new StringBuilder();
+          for (Column column : this.getColumns()) {
+              stringBuilder.append(template
+                      .replace("@field", column.getNameToCamelCase())
+                      .replace("@tableName", this.getTableName())
+                      .replace("@label", column.getLabel())
+                      + "\n");
+          }
+          return stringBuilder.toString();
+      }
+      
+      public String generateView() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException, FormatterException {
+          Formulaire formulaire = this.createFormulaire();
+          String view = formulaire.getHTMLString();
+          view = view.replace("@tableName", this.getTableName());
+          Map<String, String> configs = getCongig();
+          for (Map.Entry<String, String> entry : configs.entrySet()) {
+              String key = entry.getKey();
+              String value = this.generateChamp(entry.getKey());
+              view = view.replace("@" + key, value);
+          }
+          return view;
+      }
+
 }

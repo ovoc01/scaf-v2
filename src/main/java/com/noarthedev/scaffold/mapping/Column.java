@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
+import org.apache.commons.text.WordUtils;
+
 import com.noarthedev.scaffold.helper.Helper;
 import com.noarthedev.scaffold.template.lang.DbField;
 import com.noarthedev.scaffold.template.lang.ProgrammingLangSyntax;
@@ -16,6 +18,14 @@ public class Column {
   String name;
   String type;
   String importToDo;
+
+  public String getNameToCamelCase() {
+    return Helper.toCamelCase(this.getName());
+  }
+
+  public String getLabel() {
+    return WordUtils.capitalizeFully(this.getName(), '_').replaceAll("_", " ");
+  }
 
   public void init(ResultSet rs, Map<String, DbField> dbField)
       throws SQLException {

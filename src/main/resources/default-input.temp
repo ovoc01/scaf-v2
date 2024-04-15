@@ -1,0 +1,4 @@
+<div class="input-group">
+    <label for="@name">@name:</label>
+    <input id="@name" type="@type" name="@name" v-model="@name">
+</div>

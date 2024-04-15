@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.googlejavaformat.java.FormatterException;
 import com.noarthedev.scaffold.helper.Helper;
 import com.noarthedev.scaffold.template.Framework;
 import com.noarthedev.scaffold.template.generator.CodeGenerator;
@@ -22,7 +23,7 @@ public class DatabaseSchema {
   List<TableSchema> tables;
 
   public void toObject(Connection c, ProgrammingLangSyntax pLangSyntax, Framework frameworkInUse, String groupId,
-      String projectName,String fileToGenerate,boolean isCliGenerationPresent) throws SQLException {
+      String projectName,String fileToGenerate,boolean isCliGenerationPresent) throws SQLException, FormatterException {
     final String BASE_PACKAGE = groupId+"."+projectName;
     final String FILE_EXTENSION = pLangSyntax.getFileExtension();
     String outputDir = "";
@@ -81,6 +82,7 @@ public class DatabaseSchema {
           }
         }
 
+        Helper.generateFile(String.format("%s", tableSchema.getTableName()), "vue", tableSchema.generateView(), outputDir);
 
         // generator = new RepositoryGenerator(tableSchema, frameworkInUse,
         // BASE_PACKAGE);
