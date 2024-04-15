@@ -221,16 +221,19 @@ public class TableSchema {
     public String allGetterAndSetters() {
         StringBuilder sb = new StringBuilder();
         List<Column> real = realCol();
+        PrimaryKey pk = primaryKey.get();
+
+
+        if(pk!=null){
+            sb.append(pk.toGetterAndSetter(pSyntax));
+        }
+        
         for (Column col : real) {
             sb.append(col.toGetterAndSetter(pSyntax));
         }
 
         for (ImportedKey key : importedKeys) {
             sb.append(key.toGetterAndSetter(pSyntax));
-        }
-        PrimaryKey pk = primaryKey.get();
-        if(pk!=null){
-            sb.append(pk.toGetterAndSetter(pSyntax));
         }
 
         
