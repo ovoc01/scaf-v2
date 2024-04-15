@@ -28,7 +28,11 @@ public class DatabaseSchema {
     final String FILE_EXTENSION = pLangSyntax.getFileExtension();
     String outputDir = "";
     if(isCliGenerationPresent)outputDir = String.format("%s/src/main/java/%s/%s/", projectName, groupId.replace(".", "/"), projectName);
-    else outputDir = String.format("%s/", projectName);
+    else outputDir = String.format("%s/%s/", projectName,groupId.replace(".", "/"));
+    
+    System.out.println("===========");
+    System.out.println(outputDir);
+    System.out.println("===========");
 
     tables = new ArrayList<>();
     DatabaseMetaData databaseMetaData = c.getMetaData();
