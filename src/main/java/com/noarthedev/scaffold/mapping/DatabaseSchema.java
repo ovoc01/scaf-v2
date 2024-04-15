@@ -23,31 +23,30 @@ public class DatabaseSchema {
 
   public void toObject(Connection c, ProgrammingLangSyntax pLangSyntax, Framework frameworkInUse, String groupId,
       String projectName,String fileToGenerate,boolean isCliGenerationPresent) throws SQLException {
-    final String BASE_PACKAGE = groupId;
+    final String BASE_PACKAGE = groupId+"."+projectName;
     final String FILE_EXTENSION = pLangSyntax.getFileExtension();
     String outputDir = "";
-    if(!isCliGenerationPresent)outputDir = String.format("%s/src/main/java/%s/%s/", projectName, groupId.replace(".", "/"), projectName);
+    if(isCliGenerationPresent)outputDir = String.format("%s/src/main/java/%s/%s/", projectName, groupId.replace(".", "/"), projectName);
     else outputDir = String.format("%s/", projectName);
 
     tables = new ArrayList<>();
     DatabaseMetaData databaseMetaData = c.getMetaData();
+
     ResultSet tablesResultSet = databaseMetaData.getTables(
         null,
         null,
         null,
         new String[] { "TABLE" });
 
+
     try {
       while (tablesResultSet.next()) {
-        TableSchema tableSchema = new TableSchema(tablesResultSet, pLangSyntax, null, null);
+        TableSchema tableSchema = new TableSchema(tablesResultSet, pLangSyntax, null, null,c.getCatalog());
 
-        // System.out.println(tableSchema.getTableName());
-        ResultSet primaryKeysResultSet = databaseMetaData.getPrimaryKeys(
-            null,
-            null,
-            tableSchema.getTableName());
-        tableSchema.initOptionalPrimaryKey(primaryKeysResultSet);
+        // //System.out.println(tableSchema.getTableName());
 
+
+        
         ResultSet otherColResultSet = databaseMetaData.getColumns(
             null,
             null,
@@ -55,6 +54,22 @@ public class DatabaseSchema {
             null);
 
         tableSchema.intOtherColumn(otherColResultSet);
+
+
+        //ResultSet exportedKeysRs = databaseMetaData.getExportedKeys(null,null,tableSchema.getTableName());
+
+        tableSchema.initForeignKey(databaseMetaData);
+
+
+
+        ResultSet primaryKeysResultSet = databaseMetaData.getPrimaryKeys(
+                null,
+                null,
+                tableSchema.getTableName());
+
+        tableSchema.initOptionalPrimaryKey(primaryKeysResultSet);
+
+
 
         ArrayList<CodeGenerator> toGenerate = CodeGenerator.generate(tableSchema, frameworkInUse, BASE_PACKAGE,
             fileToGenerate);
@@ -65,6 +80,8 @@ public class DatabaseSchema {
                 codeGenerator.generate(), outputDir + codeGenerator.getType());
           }
         }
+
+
         // generator = new RepositoryGenerator(tableSchema, frameworkInUse,
         // BASE_PACKAGE);
 
@@ -72,9 +89,11 @@ public class DatabaseSchema {
         // break;
       }
     } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
-        | IllegalArgumentException | InvocationTargetException | SQLException | IOException e) {
+        | IllegalArgumentException | InvocationTargetException | SQLException e) {
 
       e.printStackTrace();
+    } catch (IOException e) {
+        throw new RuntimeException(e);
     }
 
   }

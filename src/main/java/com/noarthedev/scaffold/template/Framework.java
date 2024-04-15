@@ -6,8 +6,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.noarthedev.scaffold.App;
 import com.noarthedev.scaffold.helper.Helper;
-import com.noarthedev.scaffold.template.generator.CodeGenerator;
 import com.noarthedev.scaffold.template.lang.ProgrammingLangSyntax;
 import com.noarthedev.scaffold.template.part.*;
 
@@ -45,21 +45,21 @@ public class Framework {
       Framework framework = new Framework();
       
       framework.setPSyntax(pSyntax);
-      //System.out.println("lang in use"+pSyntax);
+      ////System.out.println("lang in use"+pSyntax);
       
       Map<String, Object> map = Helper.stringToMap(fileContent);
 
-      //System.out.println(fileContent);
+      ////System.out.println(fileContent);
       
       
-      //System.out.println(map.get("cli-project-generation"));
+      ////System.out.println(map.get("cli-project-generation"));
       framework.retrieveFileGenerable(map.get("file-generable").toString());
       framework.setCliProjectGeneration(map.get("cli-project-generation").toString());
 
 
       instanceNeededGenerator(framework,fileContent,pSyntax);
 
-      //System.out.println(framework.getEntity().getTemplate());
+      ////System.out.println(framework.getEntity().getTemplate());
       return framework;
    }
 
@@ -72,7 +72,9 @@ public class Framework {
             BasePart basePart = (BasePart) constructor.newInstance();
 
             String camelCasedField = Helper.toCamelCase(generable.replace("-","_"));
-            System.out.println(camelCasedField);
+            
+            App.LOGGER.info(camelCasedField);
+            ////System.out.println(camelCasedField);
 
             Field field = framework.getClass().getDeclaredField(camelCasedField);
             field.setAccessible(true);

@@ -1,72 +1,88 @@
 package com.noarthedev.scaffold.template.generator.impl;
 
 import com.noarthedev.scaffold.helper.Helper;
+import com.noarthedev.scaffold.mapping.ForeignKey;
 import com.noarthedev.scaffold.mapping.TableSchema;
 import com.noarthedev.scaffold.template.Framework;
 import com.noarthedev.scaffold.template.generator.CodeGenerator;
 
 public class EntityGenerator extends CodeGenerator {
 
-   public EntityGenerator(TableSchema schema, Framework inUse, String pack) {
-      super(schema, inUse, pack,"entity");
-   }
+    public EntityGenerator(TableSchema schema, Framework inUse, String pack) {
+        super(schema, inUse, pack, "entity");
+    }
 
-   @Override
-   protected String importsToDo() {
-       String importNeed = schema.columnImports();
-       if(importNeed!=null && !importNeed.isEmpty()){
-              return inUse.getEntity().importsToDo(importNeed);
-       }
-      return inUse.getEntity().importsToDo();
-   }
+    @Override
+    protected String importsToDo() {
+        String importNeed = schema.columnImports();
+        if (importNeed != null && !importNeed.isEmpty()) {
+            return inUse.getEntity().importsToDo(importNeed);
+        }
 
-   @Override
-   protected String getTemplates() {
-      return inUse.getEntity().getTemplate();
-   }
 
-   @Override
-   protected String getPackageName() {
-      return String.format("%s %s.entity;", inUse.getPSyntax().getPackageName(), BASE_PACKAGE);
-   }
+        return inUse.getEntity().importsToDo();
+    }
 
-   @Override
-   protected String getAnnotations() {
-      return inUse.getEntity().entityAnnotations();
-   }
 
-   @Override
-   protected String getInheritance() {
-      return inUse.getEntity().getInheritance();
-   }
+    protected String foreignKeyImport() {
+        StringBuilder sb = new StringBuilder();
+        if (!schema.getForeignKeys().isEmpty()) {
 
-   @Override
-   protected String getInjectionAnnotation() {
-      // Return an empty string because for now there is no Entity in our framework
-      // who need an field injection
-      // FIXME: Later
-      return "";
-   }
+            for (ForeignKey fk : schema.getForeignKeys()) {
+                sb.append("\n").append(schema.getPSyntax().getImportName()).append(" ").append(BASE_PACKAGE).append(".entity.").append(fk.getType()).append(";");
+            }
+        }
+        return sb.toString();
+    }
 
-   @Override
-   protected String implementationOfExtraReplacement(String temp) {
-      if (schema.isPrimaryKeyPresent()) {
-         String idMarks = "";
-         if(!inUse.getEntity().getIdMarks().equals("none"))idMarks = inUse.getPSyntax().getAnnotation().replace(":mark", inUse.getEntity().getIdMarks());
-         temp = temp.replace("@?[id-marks]", idMarks);
-         temp = temp.replace("?[Id]", schema.getPrimaryKey().get().toString());
-      }
+    @Override
+    protected String getTemplates() {
+        return inUse.getEntity().getTemplate();
+    }
 
-      temp = temp.replace("[columns]", schema.allColumns(inUse));
-      temp = temp.replace("[getters&&setters]", schema.allGetterAndSetters());
-      temp = temp.replace("[noArgsConstructor]",inUse.getEntity().getMethods());
+    @Override
+    protected String getPackageName() {
+        return String.format("%s %s.entity;", inUse.getPSyntax().getPackageName(), BASE_PACKAGE);
+    }
 
-      return temp;
-   }
+    @Override
+    protected String getAnnotations() {
+        return inUse.getEntity().entityAnnotations();
+    }
 
-   @Override
-   public String getFileToGenerateName(){
-      return String.format("%s", Helper.toPascalCase(schema.getTableName()));
-   }
+    @Override
+    protected String getInheritance() {
+        return inUse.getEntity().getInheritance();
+    }
+
+    @Override
+    protected String getInjectionAnnotation() {
+        // Return an empty string because for now there is no Entity in our framework
+        // who need an field injection
+        // FIXME: Later
+        return "";
+    }
+
+    @Override
+    protected String implementationOfExtraReplacement(String temp) {
+        if (schema.isPrimaryKeyPresent()) {
+            String idMarks = "";
+            if (!inUse.getEntity().getIdMarks().equals("none"))
+                idMarks = inUse.getPSyntax().getAnnotation().replace(":mark", inUse.getEntity().getIdMarks());
+            temp = temp.replace("@?[id-marks]", idMarks);
+            temp = temp.replace("?[Id]", schema.getPrimaryKey().get().toString());
+        }
+
+        temp = temp.replace("[columns]", schema.allColumns(inUse));
+        temp = temp.replace("[getters&&setters]", schema.allGetterAndSetters());
+        temp = temp.replace("[noArgsConstructor]", inUse.getEntity().getMethods());
+
+        return temp;
+    }
+
+    @Override
+    public String getFileToGenerateName() {
+        return String.format("%s", Helper.toPascalCase(schema.getTableName()));
+    }
 
 }

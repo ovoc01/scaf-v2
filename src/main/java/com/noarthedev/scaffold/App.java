@@ -4,38 +4,61 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.sql.*;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.noarthedev.scaffold.helper.Helper;
 import com.noarthedev.scaffold.props.ScaffoldProps;
 import com.noarthedev.scaffold.run.GenerationSession;
-import org.slf4j.ILoggerFactory;
 
 import static spark.Spark.*;
 
 public class App {
-
+    public static Logger LOGGER = LoggerFactory.getLogger(App.class); 
     public static void main(String[] args)
-            throws  SecurityException, IllegalArgumentException{
+            throws SecurityException, IllegalArgumentException {
 
         String fileToGenerate = "entity,repository";
-        final String JDBC_URL = "jdbc:postgresql://localhost:5432/panneau";
+        final String JDBC_URL = "jdbc:postgresql://localhost:5432/db_tp";
         final String USER = "postgres";
         final String PASSWORD = "pixel";
 
+        /*
+         * try {
+         * Connection c = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+         * DatabaseMetaData databaseMetaData = c.getMetaData();
+         * 
+         * ResultSet tablesResultSet =
+         * databaseMetaData.getExportedKeys(c.getCatalog(),c.getSchema(),"facture");
+         * 
+         * while (tablesResultSet.next()){
+         * //System.out.println(tablesResultSet);
+         * }
+         * 
+         * } catch (SQLException e) {
+         * throw new RuntimeException(e);
+         * }
+         */
+
+        port(3456);
 
         enableCORS("*", "*", "*", "*");
 
         get("/hello", (req, res) -> "Hello, world");
 
         post("/skfflod", (request, response) -> {
-            System.out.println("atoo");
+            //System.out.println("atoo");
             response.type("application/json");
             ScaffoldProps sProps = new Gson().fromJson(request.body(), ScaffoldProps.class);
+
+            //System.out.println(sProps);
+
             new GenerationSession().run(sProps);
 
             File projectDirectory = new File(sProps.getProjectName());
-
 
             String zipFileName = sProps.getProjectName() + ".zip";
             Helper.zipDirectory(projectDirectory, zipFileName);
@@ -56,6 +79,7 @@ public class App {
                         outputStream.write(buffer, 0, length);
                     }
                     outputStream.flush();
+                    projectDirectory.delete();
                 } catch (IOException e) {
                     response.status(500);
                     return "Internal Server Error";
@@ -68,9 +92,7 @@ public class App {
             }
         });
 
-
-
-    }
+    } 
 
     private static void enableCORS(final String origin, final String methods, final String headers,
             final String exposedHeaders) {

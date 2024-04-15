@@ -1,14 +1,14 @@
-package=package
-import=import
-class-declaration=public class
-interface-declaration=public interface
-open-brackets={
-close-brackets=}
-syntax-case=CAMEL_CASE
-inheritance-syntax=extends
-annotation-syntax=@:mark
-raise-exception=throws
-file-extension=java
+package = package
+import = import
+class-declaration = public class
+interface-declaration = public interface
+open-brackets = {
+close-brackets = }
+syntax-case = CAMEL_CASE
+inheritance-syntax = extends
+annotation-syntax = @:mark
+raise-exception = throws
+file-extension = java
 
 
 ##getters&&setters
@@ -24,18 +24,19 @@ file-extension=java
 
 
 ##dbFieldCorrespondance
-    int4=Integer
-    varchar=String
-    timestamp=Timestamp:java.sql.Timestamp
-    date=Date:java.sql.Date
-    float=Double
-    float8=Double
-    numeric=Double
-    time=Time:java.sql.Time
-    bytea=byte[]
-    bigserial=Long
-    decimal=BigDecimal:java.math.BigDecimal
-    smallint=Integer
-    doubleprecision=Double
-    text=String
+    int4 = Integer
+    serial = Long
+    varchar = String
+    timestamp = Timestamp:java.sql.Timestamp
+    date = Date:java.sql.Date
+    float = Double
+    float8 = Double
+    numeric = Double
+    time = Time:java.sql.Time
+    bytea = byte[]
+    bigserial = Long
+    decimal = BigDecimal:java.math.BigDecimal
+    smallint = Integer
+    doubleprecision = Double
+    text = String
 !!dbFieldCorrespondance

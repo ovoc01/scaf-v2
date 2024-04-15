@@ -23,8 +23,8 @@ public class RestControllerGenerator extends CodeGenerator {
       sb.append(inUse.getRestController().importsToDo()).append("\n");
       sb.append("import " + BASE_PACKAGE + ".entity.").append(schema.entityName()).append(";").append("\n");
 
-      System.out.println(inUse.getRestController().getInjectionAnnotation());
-      if(!inUse.getRestController().getInjectionAnnotation().isEmpty()){
+      //System.out.println(inUse.getRestController().getInjectionAnnotation());
+      if (!inUse.getRestController().getInjectionAnnotation().isEmpty()) {
          sb.append("import " + BASE_PACKAGE + ".service.").append(schema.entityName() + "Service").append(";");
       }
 
@@ -43,16 +43,17 @@ public class RestControllerGenerator extends CodeGenerator {
 
    @Override
    protected String getInheritance() {
-      return inUse.getRestController().getInheritance();
+      return inUse.getRestController().getInheritance().replace("[entityName]", schema.entityName());
    }
 
    @Override
    protected String getInjectionAnnotation() {
-      if(inUse.getRestController().getInjectionAnnotation().equals("none") || inUse.getRestController().getInjectionAnnotation().isEmpty()){
+      if (inUse.getRestController().getInjectionAnnotation().equals("none")
+            || inUse.getRestController().getInjectionAnnotation().isEmpty()) {
          return "";
       }
       return String.format("%s  %sService %sService;", inUse.getPSyntax().getAnnotation().replace(":mark",
-              inUse.getRestController().getInjectionAnnotation()),schema.entityName(),schema.tableNameToCamelCase());
+            inUse.getRestController().getInjectionAnnotation()), schema.entityName(), schema.tableNameToCamelCase());
    }
 
    @Override

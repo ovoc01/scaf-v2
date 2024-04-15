@@ -32,7 +32,7 @@ public class RestControllerPart extends BasePart{
       
 
       
-      //System.out.println(methods);
+      ////System.out.println(methods);
 
       restControllerPart.setPSyntax(pSyntax);
       pBasePart.completeChild(restControllerPart);

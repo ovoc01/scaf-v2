@@ -37,7 +37,7 @@ public class RepositoryGenerator extends CodeGenerator {
 
    @Override
    protected String getInheritance() {
-      return inUse.getRepository().getInheritance();
+      return inUse.getRepository().getInheritance().replace("[entityName]",schema.entityName());
    }
 
    @Override

@@ -28,16 +28,16 @@ public class GenerationSession {
   public void run(ScaffoldProps props)
           throws SQLException, IOException, InterruptedException, NoSuchMethodException, SecurityException,
           InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException {
-        
+
     Connection c = DriverManager.getConnection(props.getUrl(), props.getUser(), props.getPwd());
     final String lang_template = Helper.readInputStream(
-        App.class.getClassLoader().getResourceAsStream(String.format("configuration/%s.temp", props.getLang())));
+          App.class.getClassLoader().getResourceAsStream(String.format("configuration/%s.temp", props.getLang())));
 
     final String frameworkTemplate = Helper.readInputStream(
         App.class.getClassLoader()
             .getResourceAsStream(String.format("configuration/framework/%s.properties", props.getFramework())));
 
-    // System.out.println(frameworkTemplate);
+    // //System.out.println(frameworkTemplate);
 
     // TODO: prendre les informations en plus des templates
     // (services,repository,controller)
@@ -48,9 +48,9 @@ public class GenerationSession {
     langInUse.setLang(props.getLang());
 
     frameworkInUse = Framework.build(frameworkTemplate, langInUse);
-    
-    boolean isCliGenerationPresent = frameworkInUse.getCliProjectGeneration().equals("none");
-    System.out.println(isCliGenerationPresent);
+
+    boolean isCliGenerationPresent = !frameworkInUse.getCliProjectGeneration().equals("none");
+    ////System.out.println("ito ilay izy "+isCliGenerationPresent);
     if(isCliGenerationPresent){
       generateNewProject(frameworkInUse.getCliProjectGeneration(), props.getProjectName(), props.getGroupId(),
           props.getBuild());
@@ -63,6 +63,7 @@ public class GenerationSession {
       throws IOException, InterruptedException {
     command = command.replace("##build", buildTools).replace("##basePackage", groupId).replace("##projectName",
         projectName);
+    //System.out.println(command);
     ProcessBuilder processBuilder = new ProcessBuilder();
     boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
     if (isWindows) {
@@ -77,11 +78,11 @@ public class GenerationSession {
     BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
     String line;
     while ((line = reader.readLine()) != null) {
-      System.out.println(line);
+      //System.out.println(line);
     }
 
     int exitCode = process.waitFor();
-    System.out.println("Exited with error code " + exitCode);
+    //System.out.println("Exited with error code " + exitCode);
 
   }
 }

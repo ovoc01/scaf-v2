@@ -4,8 +4,8 @@
 
 [annotation]
 [class-declaration] [entityName]Service [inheritance] [open-brackets]
-   ##injection-annotation
-   [entityName]Repository [tableName]Repository;
+   [injection-annotation]
+   [entityName]Repository [camelCasedName]Repository;
 
    [service-methods]
 

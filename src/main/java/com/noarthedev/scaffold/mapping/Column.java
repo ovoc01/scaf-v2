@@ -21,11 +21,13 @@ public class Column {
       throws SQLException {
     setName(rs.getString("COLUMN_NAME"));
     DbField dB = dbField.get(rs.getString("TYPE_NAME"));
-    // System.out.println(rs.getString("TYPE_NAME"));
+
+    ////System.out.println("this is the db "+dB);
+    System.out.printf("this is dB %s && this is the original type %s",dB,rs.getString("TYPE_NAME"));
     setType(dB.getName());
 
     setImportToDo(dB.getImports() == null ? null : dB.getImports().get());
-    // System.out.println(getType());
+    // //System.out.println(getType());
   }
 
   public String toString() {

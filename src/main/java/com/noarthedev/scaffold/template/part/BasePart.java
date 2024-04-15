@@ -22,6 +22,7 @@ public class BasePart {
     protected String inheritance;
     protected String methods;
     protected String injectionAnnotation;
+    protected String declaration;
 
 
     public BasePart(String part) {
@@ -38,16 +39,17 @@ public class BasePart {
             part.setAnnotations(map.get(CLASS_PART + ".annotation").toString().split(","));
             part.setImports(map.get(CLASS_PART + ".imports").toString().split(","));
             part.setInheritance(map.get(CLASS_PART + ".inheritance").toString());
+            part.setDeclaration(map.get(CLASS_PART+".declaration").toString());
         } catch (NullPointerException p) {
-            System.out.println(p);
+            p.printStackTrace();
         }
 
 
-        //System.out.println(pSyntax.getLang());
+        ////System.out.println(pSyntax.getLang());
         part.getTemplate(pSyntax.getLang());
         part.prepareTemplate();
 
-        //System.out.println(part.getTemplate());
+        ////System.out.println(part.getTemplate());
 
         return part;
     }
@@ -56,7 +58,7 @@ public class BasePart {
         template = template.replace("[open-brackets]", pSyntax.getOpenBrackets());
         template = template.replace("[close-brackets]", pSyntax.getCloseBrackets());
         template = template.replace("[class-declaration]", pSyntax.getClassDeclaration());
-        template = template.replace("[interface-declaration]", pSyntax.getClassDeclaration());
+        template = template.replace("[interface-declaration]", pSyntax.getInterfaceDeclaration());
     }
 
     public void getTemplate(String lang) {

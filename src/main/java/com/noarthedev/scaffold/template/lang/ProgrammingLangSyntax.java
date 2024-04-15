@@ -45,6 +45,8 @@ public class ProgrammingLangSyntax {
             partEnd,
             "getters&&setters"));
 
+
+    //System.out.println(pgls);
     pgls.setClassDeclaration(dataMap.get("class-declaration").toString());
     pgls.setInterfaceDeclaration(dataMap.get("interface-declaration").toString());
     pgls.setPackageName(dataMap.get("package").toString());
@@ -64,7 +66,7 @@ public class ProgrammingLangSyntax {
         "dbFieldCorrespondance");
     pgls.setDbType(pgls.initDbType(typeSplited));
 
-    // System.out.println(pgls.toString());
+    // //System.out.println(pgls.toString());
     return pgls;
   }
 

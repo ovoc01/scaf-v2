@@ -59,17 +59,31 @@ public abstract class CodeGenerator {
       placeholder.put("[inheritance]", inheritance());
       placeholder.put("[imports]", importsToDo());
       placeholder.put("[package]", getPackageName());
+      //placeholder.put("##entityName", schema.entityName());
       placeholder.put("[entityName]", schema.entityName());
-      placeholder.put("[tableName]", schema.tableNameToCamelCase());
-      placeholder.put("[primaryKeyColName]",schema.getPrimaryKey().get().getName());
 
+      placeholder.put("[tableName]", schema.getTableName());
+      placeholder.put("[camelCasedName]", Helper.toCamelCase(schema.getTableName()));
+      
+
+      //System.out.println("this is fddd"+ schema.getPrimaryKey().isEmpty());
+
+
+      if(!schema.getPrimaryKey().isEmpty()){
+         placeholder.put("[primaryKeyColName]",schema.getPrimaryKey().get().getName());
+      }
+      placeholder.put("##first3", schema.first3Letters());
+      placeholder.put("##dbName",schema.getDatabase());
+
+      placeholder.put("[injection-annotation]",getInjectionAnnotation());
+      
       if(inUse.getRestController().getInjectionAnnotation().isEmpty()){
          placeholder.put("[injection]","");
       }else{
          placeholder.put("[injection]",getInjectionAnnotation());
       }
 
-
+      
       // Optional may throws an exception in case that the table may not have a
       // primary key
 
@@ -84,6 +98,8 @@ public abstract class CodeGenerator {
       template = implementationOfExtraReplacement(template);
       String generate = TemplateHelper.replacePlaceholders(template, placeholder);
 
+
+
       return generate;
    }
 
@@ -94,7 +110,7 @@ public abstract class CodeGenerator {
       return String.format("%s %s", inUse.getPSyntax().getInheritance(), val);
    }
 
-   
+
    public static ArrayList<CodeGenerator> generate(TableSchema schema, Framework framework, String basePackage,
          String fileToGenerate) throws NoSuchMethodException, SecurityException, InstantiationException,
          IllegalAccessException, IllegalArgumentException, InvocationTargetException {

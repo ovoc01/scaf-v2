@@ -25,21 +25,21 @@ public class AppTest {
   public @Test void toCamelCase() {
     String input = "hello_world";
 
-    System.out.println();
+    //System.out.println();
     String camelCase = CaseUtils.toCamelCase(input, false, '_');
     assertTrue(camelCase.equals("helloWorld"));
-    System.out.println(camelCase); // Output: helloWorld
+    //System.out.println(camelCase); // Output: helloWorld
   }
 
   public @Test void toPascalCase() {
     String input = "helloworld";
 
-    System.out.println();
+    //System.out.println();
     String pascalCaseWord = WordUtils
       .capitalizeFully(input, '_')
       .replaceAll("_", "");
     assertTrue(pascalCaseWord.equals("Helloworld"));
-    System.out.println(pascalCaseWord); // Output: helloWorld
+    //System.out.println(pascalCaseWord); // Output: helloWorld
   }
 
   public @Test void writeFile() throws IOException{

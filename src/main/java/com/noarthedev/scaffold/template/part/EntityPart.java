@@ -1,11 +1,9 @@
 package com.noarthedev.scaffold.template.part;
 
 import java.util.Map;
-import java.util.Optional;
 
 import com.noarthedev.scaffold.helper.Helper;
 import com.noarthedev.scaffold.template.lang.ProgrammingLangSyntax;
-
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +13,9 @@ import lombok.Setter;
 public class EntityPart extends BasePart {
     String idMarks;
     String columnMark;
+    String exportedKeysMark;
+    String exportedKeysList;
+    String importedKeysMark;
 
     public EntityPart() {
         super("entity");
@@ -40,16 +41,22 @@ public class EntityPart extends BasePart {
                         "noArgsConstructor")
         );
 
-
+        ////System.out.println(map.get("entity.id-marks"));
         part.setIdMarks(map.get("entity.id-marks"));
         part.setColumnMark(map.get("entity.column-mark").toString());
+
+
+        ////System.out.println(map);
+        part.setExportedKeysMark(map.get("entity.exported-keys-mark").toString());
+        part.setImportedKeysMark(map.get("entity.imported-keys-mark").toString());
+        part.setExportedKeysList(map.get("entity.exported-keys-list").toString());
         basePart.completeChild(part);
 
         return part;
     }
 
     public void setIdMarks(Object object) {
-        System.out.println("eto asika " + object);
+        ////System.out.println("eto asika " + object);
         if (object == null) this.idMarks = "";
 
         this.idMarks = object.toString();

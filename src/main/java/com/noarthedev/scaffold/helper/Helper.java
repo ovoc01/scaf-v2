@@ -19,12 +19,17 @@ import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.text.CaseUtils;
 import org.apache.commons.text.WordUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.googlejavaformat.java.Formatter;
 import com.google.googlejavaformat.java.FormatterException;
+
 import com.noarthedev.scaffold.template.Framework;
 
 public class Helper {
+
+  static Logger LOGGER = LoggerFactory.getLogger(Helper.class);
 
   public static String readInputStream(InputStream is) {
     String result = new BufferedReader(new InputStreamReader(is))
@@ -37,15 +42,15 @@ public class Helper {
     Map<String, Object> map = new HashMap<>();
 
     // Split the input string by newline character
+
     String[] lines = string.split("\\r?\\n");
 
     // Iterate over each line
     for (String line : lines) {
       // Split each line by '=' character
-      String[] keyValue = line.split("=");
-      
+      String[] keyValue = line.split(" = ");
+
       if (keyValue.length == 2) {
-       
         // Add key-value pair to the map
         map.put(keyValue[0].trim(), keyValue[1].trim());
       }
@@ -95,16 +100,15 @@ public class Helper {
     return " ".repeat(4);
   }
 
-  public static void generateFile(String filename, String ext, String fileContent, String outputDir) throws IOException {
-    final String fileOutputName = String.format("%s/%s.%s",outputDir, filename, ext);
+  public static void generateFile(String filename, String ext, String fileContent, String outputDir)
+      throws IOException {
+    final String fileOutputName = String.format("%s/%s.%s", outputDir, filename, ext);
     File file = new File(outputDir);
 
-
-    if(!file.exists()){
-      
-      System.out.println(file.mkdirs());
+    if (!file.exists()) {
+      file.mkdirs();
     }
-    
+
     try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileOutputName))) {
       writer.write(fileContent);
       writer.close();
@@ -114,59 +118,65 @@ public class Helper {
 
   }
 
-  public static boolean initSpringProject(String build,String groupId,String projectName,Framework inUse){
+  public static boolean initSpringProject(String build, String groupId, String projectName, Framework inUse) {
     return true;
   }
 
   public static void zipDirectory(File dir, String zipDirName) throws IOException {
-    if (!dir.isDirectory()) throw new IllegalStateException("File must be a directory");
+    if (!dir.isDirectory())
+      throw new IllegalStateException("File must be a directory");
 
     List<String> filesListInDir = new ArrayList<>();
     populateFilesList(dir, filesListInDir);
 
     try (FileOutputStream fos = new FileOutputStream(zipDirName);
-         ZipOutputStream zos = new ZipOutputStream(fos)) {
+        ZipOutputStream zos = new ZipOutputStream(fos)) {
 
-        for (String filePath : filesListInDir) {
-            System.out.println("Zipping " + filePath);
-            ZipEntry ze = new ZipEntry(filePath.substring(dir.getAbsolutePath().length() + 1));
-            zos.putNextEntry(ze);
+      for (String filePath : filesListInDir) {
+        LOGGER.info("Zipping {}", filePath);
+        // //System.out.println("Zipping " + filePath);
+        ZipEntry ze = new ZipEntry(filePath.substring(dir.getAbsolutePath().length() + 1));
+        zos.putNextEntry(ze);
 
-            try (FileInputStream fis = new FileInputStream(filePath)) {
-                byte[] buffer = new byte[1024];
-                int len;
-                while ((len = fis.read(buffer)) > 0) {
-                    zos.write(buffer, 0, len);
-                }
-            } catch (IOException e) {
-                System.err.println("Error reading file: " + filePath);
-                e.printStackTrace();
-            }
-
-            zos.closeEntry();
+        try (FileInputStream fis = new FileInputStream(filePath)) {
+          byte[] buffer = new byte[1024];
+          int len;
+          while ((len = fis.read(buffer)) > 0) {
+            zos.write(buffer, 0, len);
+          }
+        } catch (IOException e) {
+          System.err.println("Error reading file: " + filePath);
+          e.printStackTrace();
         }
+
+        zos.closeEntry();
+      }
     } catch (IOException e) {
-        System.err.println("Error creating ZIP file: " + zipDirName);
-        e.printStackTrace();
-        throw e; // Propagate the exception
+      LOGGER.error("Error zipping the file {} error occurs :{}",zipDirName,e);
+      //System.err.println("Error creating ZIP file: " + zipDirName);
+      e.printStackTrace();
+      throw e; // Propagate the exception
     }
-}
+  }
 
   /**
-     * This method populates all the files in a directory to a List
-     * @param dir
-     * @throws IOException
-     */
-    private static void populateFilesList(File dir,List<String> filesListInDir) throws IOException {
-      
-      File[] files = dir.listFiles();
-      //System.out.println(files);
-      
-      for(File file : files){
-          if(file.isFile()) filesListInDir.add(file.getAbsolutePath());
-          else populateFilesList(file,filesListInDir);
-      }
-      
+   * This method populates all the files in a directory to a List
+   * 
+   * @param dir
+   * @throws IOException
+   */
+  private static void populateFilesList(File dir, List<String> filesListInDir) throws IOException {
+
+    File[] files = dir.listFiles();
+    // //System.out.println(files);
+
+    for (File file : files) {
+      if (file.isFile())
+        filesListInDir.add(file.getAbsolutePath());
+      else
+        populateFilesList(file, filesListInDir);
+    }
+
   }
 
 }

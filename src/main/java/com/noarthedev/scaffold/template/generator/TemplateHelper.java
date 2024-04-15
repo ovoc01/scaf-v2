@@ -6,6 +6,7 @@ public class TemplateHelper {
    public static String replacePlaceholders(String template,Map<String,String> placeHolder) {
     String result = template;
     for(String key: placeHolder.keySet()){
+
        result =  result.replace(key, placeHolder.get(key));
       }
     return result;

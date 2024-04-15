@@ -32,7 +32,7 @@ public class ServiceGenerator extends CodeGenerator {
 
    @Override
    protected String getAnnotations() {
-      return inUse.getService().entityAnnotations();
+      return inUse.getService().entityAnnotations();  
    }
 
    @Override
@@ -42,6 +42,7 @@ public class ServiceGenerator extends CodeGenerator {
 
    @Override
    protected String getInjectionAnnotation() {
+      //System.out.println(String.format("%s", inUse.getPSyntax().getAnnotation().replace(":mark", inUse.getService().getInjectionAnnotation())));
       return String.format("%s", inUse.getPSyntax().getAnnotation().replace(":mark", inUse.getService().getInjectionAnnotation()));
    }
 
@@ -49,7 +50,6 @@ public class ServiceGenerator extends CodeGenerator {
    protected String implementationOfExtraReplacement(String temp) {
       temp = temp
       .replace("[service-methods]", inUse.getService().getMethods());
-
       return temp;
    }
 
