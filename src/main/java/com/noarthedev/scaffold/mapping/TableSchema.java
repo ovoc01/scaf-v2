@@ -138,7 +138,7 @@ public class TableSchema {
         int a = 0;
         List<Column> real = realCol();
         for (Column col : real) {
-            if (primaryKey!=null && !col.equals(primaryKey.get())) {
+            if (primaryKey != null && !col.equals(primaryKey.get())) {
                 String coln = "";
                 if (!inUse.getEntity().getColumnMark().equals("none")) {
                     coln = marks.replace(":mark", inUse.getEntity().getColumnMark());
@@ -156,39 +156,38 @@ public class TableSchema {
             }
         }
 
-        if (!inUse.getEntity().getExportedKeysMark().equals("none")){
+        if (!inUse.getEntity().getExportedKeysMark().equals("none")) {
             for (ExportedKey key : exportedKeys) {
                 String realAn, listKind = "";
-                String [] annotation = null;
+                String[] annotation = null;
                 annotation = inUse.getEntity().getExportedKeysMark().split(";");
-    
-                for(String d : annotation){
+
+                for (String d : annotation) {
                     sb.append("\n");
-                    realAn = marks.replace(":mark", d.replace("##table_exporter",Helper.toCamelCase(getTableName())));
+                    realAn = marks.replace(":mark", d.replace("##table_exporter", Helper.toCamelCase(getTableName())));
                     sb.append(Helper.identation());
                     sb.append(realAn);
-                    
+
                 }
-                //sb.append("\n");
+                // sb.append("\n");
                 listKind = inUse.getEntity().getExportedKeysList();
                 sb.append(Helper.identation());
-                //sb.append(annotation);
+                // sb.append(annotation);
                 sb.append("\n");
                 sb.append(Helper.identation());
                 sb.append(listKind.replace("##referenceTable", key.getType()))
                         .append(Helper.toCamelCase(key.getReferenceTable())).append(";");
-                
-                        sb.append("\n");
+
+                sb.append("\n");
             }
         }
 
-
-        if (!inUse.getEntity().getImportedKeysMark().equals("none")){
+        if (!inUse.getEntity().getImportedKeysMark().equals("none")) {
             for (ImportedKey key : importedKeys) {
                 String annotation[] = null;
                 String realAn = "";
                 annotation = inUse.getEntity().getImportedKeysMark().split(";");
-                if(annotation.length>1){
+                if (annotation.length > 1) {
                     for (String d : annotation) {
                         sb.append("\n");
                         realAn = marks.replace(":mark", d.replace("##fkcolumn_name", key.getFKCOLUMN_NAME()));
@@ -200,7 +199,7 @@ public class TableSchema {
                 sb.append(Helper.identation());
                 sb.append(key.getType() + " ").append(Helper.toCamelCase(key.getReferenceTable()) + ";");
                 sb.append("\n");
-    
+
             }
         }
 
@@ -235,10 +234,9 @@ public class TableSchema {
     public String allGetterAndSetters() {
         StringBuilder sb = new StringBuilder();
         List<Column> real = realCol();
-        PrimaryKey pk = (primaryKey == null) ? null : primaryKey.get() ;
+        PrimaryKey pk = (primaryKey == null) ? null : primaryKey.get();
 
-
-        if(pk!=null){
+        if (pk != null) {
             sb.append(pk.toGetterAndSetter(pSyntax));
         }
 
@@ -250,7 +248,6 @@ public class TableSchema {
             sb.append(key.toGetterAndSetter(pSyntax));
         }
 
-        
         return sb.toString();
     }
 
@@ -283,76 +280,80 @@ public class TableSchema {
         int val = (let.length() / 2);
         return let.substring(0, Math.min(val, 3)).toUpperCase();
     }
-    
-    public Formulaire createFormulaire() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException {
-          List<Column> columns = this.realCol();
-          Champ[] champs = new Champ[columns.size()];
-          
-          if (columns.size() == 0) 
-              throw new IllegalArgumentException("No argument in obj");
-          
-          Template template = new Template().createTemplate("template/config.properties");
-          for (int i = 0; i < columns.size(); i++) {
-              champs[i] = new Champ();
-              
-              String label = Champ.toUpperCasefisrtLetter(columns.get(i).getNameToCamelCase());
-              champs[i].setLabel(label);
-              
-              Input input = new Input(columns.get(i).getNameToCamelCase(), "", "", champs[i].getType(columns.get(i).getType()), "");
-              input.setTemplate(template.getInput());
-              champs[i].setInput(input);
-          }
-          
-          Formulaire formulaire = new Formulaire();
-          formulaire.setListeChamp(champs);
-          formulaire.setObj(this);
-          formulaire.setTemplate(template.getFormulaire());
-          return formulaire;
-      }
-    
-      public static Map<String, String> getCongig() {
-          Type type = new TypeToken<Map<String, String>>(){}.getType();
-          Gson gson = new Gson();
-          URL root = Thread.currentThread().getContextClassLoader().getResource("config.json");
-          StringBuilder result = new StringBuilder();
-          try {
-              BufferedReader reader = new BufferedReader(new FileReader(root.getFile()));
-              String line;
-              while ((line = reader.readLine()) != null) {
-                  result.append(line);
-              }
-              reader.close();
-          } catch (IOException e) {
+
+    public Formulaire createFormulaire() throws IllegalArgumentException, IllegalAccessException,
+            InvocationTargetException, NoSuchMethodException, SecurityException, IOException {
+        List<Column> columns = this.realCol();
+        Champ[] champs = new Champ[columns.size()];
+
+        if (columns.size() == 0)
+            throw new IllegalArgumentException("No argument in obj");
+
+        Template template = new Template().createTemplate("template/config.properties");
+        for (int i = 0; i < columns.size(); i++) {
+            champs[i] = new Champ();
+
+            String label = Champ.toUpperCasefisrtLetter(columns.get(i).getNameToCamelCase());
+            champs[i].setLabel(label);
+
+            Input input = new Input(columns.get(i).getNameToCamelCase(), "", "",
+                    champs[i].getType(columns.get(i).getType()), "");
+            input.setTemplate(template.getInput());
+            champs[i].setInput(input);
+        }
+
+        Formulaire formulaire = new Formulaire();
+        formulaire.setListeChamp(champs);
+        formulaire.setObj(this);
+        formulaire.setTemplate(template.getFormulaire());
+        return formulaire;
+    }
+
+    public static Map<String, String> getCongig() {
+        Type type = new TypeToken<Map<String, String>>() {
+        }.getType();
+        Gson gson = new Gson();
+        URL root = Thread.currentThread().getContextClassLoader().getResource("config.json");
+        StringBuilder result = new StringBuilder();
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(root.getFile()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                result.append(line);
+            }
+            reader.close();
+        } catch (IOException e) {
             e.printStackTrace();
-          }
-          return gson.fromJson(result.toString(), type);
-      }
-    
-      public String generateChamp(String type) {
-          Map<String, String> configs = getCongig();
-          String template = configs.get(type);
-          StringBuilder stringBuilder = new StringBuilder();
-          for (Column column : this.getColumns()) {
-              stringBuilder.append(template
-                      .replace("@field", column.getNameToCamelCase())
-                      .replace("@tableName", this.getTableName())
-                      .replace("@label", column.getLabel())
-                      + "\n");
-          }
-          return stringBuilder.toString();
-      }
-      
-      public String generateView() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException, FormatterException {
-          Formulaire formulaire = this.createFormulaire();
-          String view = formulaire.getHTMLString();
-          view = view.replace("@tableName", this.getTableName());
-          Map<String, String> configs = getCongig();
-          for (Map.Entry<String, String> entry : configs.entrySet()) {
-              String key = entry.getKey();
-              String value = this.generateChamp(entry.getKey());
-              view = view.replace("@" + key, value);
-          }
-          return view;
-      }
+        }
+        return gson.fromJson(result.toString(), type);
+    }
+
+    public String generateChamp(String type) {
+        Map<String, String> configs = getCongig();
+        String template = configs.get(type);
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Column column : this.getColumns()) {
+            stringBuilder.append(template
+                    .replace("@field", column.getNameToCamelCase())
+                    .replace("@tableName", this.getTableName())
+                    .replace("@label", column.getLabel())
+                    + "\n");
+        }
+        return stringBuilder.toString();
+    }
+
+    public String generateView() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException,
+            NoSuchMethodException, SecurityException, IOException, FormatterException {
+        Formulaire formulaire = this.createFormulaire();
+        String view = formulaire.getHTMLString();
+        view = view.replace("@tableName", this.getTableName());
+        Map<String, String> configs = getCongig();
+        for (Map.Entry<String, String> entry : configs.entrySet()) {
+            String key = entry.getKey();
+            String value = this.generateChamp(entry.getKey());
+            view = view.replace("@" + key, value);
+        }
+        return view;
+    }
 
 }

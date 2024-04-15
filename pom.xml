@@ -84,6 +84,8 @@
       <groupId>com</groupId>
       <artifactId>formulaire</artifactId>
       <version>1.2</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/lib/formulaire-1.2.jar</systemPath>
     </dependency>
 
   </dependencies>
