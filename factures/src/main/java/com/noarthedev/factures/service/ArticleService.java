@@ -9,21 +9,25 @@ import com.noarthedev.factures.repository.ArticleRepository;
 
 @Service
 
-public class ArticleService {
-    @Autowired
-    ArticleRepository articleRepository;
+public class ArticleService  {
+   @Autowired
+   ArticleRepository articleRepository;
 
-    public List<Article> getAllEntities() {
+   
+   public List<Article> getAllEntities() {
         return articleRepository.findAll();
     }
+
 
     public Optional<Article> getEntityById(String id) {
         return articleRepository.findById(id);
     }
 
+
     public Article saveEntity(Article article) {
         return articleRepository.save(article);
     }
+
 
     public Article updateEntity(Article article) {
         return articleRepository.save(article);
@@ -32,5 +36,7 @@ public class ArticleService {
     public void deleteEntityById(String id) {
         articleRepository.deleteById(id);
     }
+
+
 
 }

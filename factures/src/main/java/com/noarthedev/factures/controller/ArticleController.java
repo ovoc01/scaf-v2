@@ -6,11 +6,13 @@ import java.util.HashMap;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import com.noarthedev.factures.entity.Article;
 import com.noarthedev.factures.service.ArticleService;
 
 @RestController
 @RequestMapping("/articles")
+@CrossOrigin("*")
 
 public class ArticleController  {
     @Autowired  ArticleService articleService;
@@ -28,6 +30,21 @@ public class ArticleController  {
         }
 
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> findByIdArticle(@PathVariable("id")String id){
+        HashMap<String,Object> data = new HashMap<>();
+
+        try{
+            Article article = articleService.getEntityById(id).get();
+            data.put("article",article);
+            return new ResponseEntity<>(data, HttpStatus.OK);
+        }catch(Exception e){
+            data.put("error",e.getMessage());
+            return ResponseEntity.badRequest().body(data);
+        }
+    }
+
 
     @PostMapping
     public ResponseEntity<Object> createArticle(@RequestBody Article article){

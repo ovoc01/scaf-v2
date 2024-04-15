@@ -6,11 +6,13 @@ import java.util.HashMap;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import com.noarthedev.factures.entity.TypeArticle;
 import com.noarthedev.factures.service.TypeArticleService;
 
 @RestController
 @RequestMapping("/typeArticles")
+@CrossOrigin("*")
 
 public class TypeArticleController  {
     @Autowired  TypeArticleService typeArticleService;
@@ -28,6 +30,21 @@ public class TypeArticleController  {
         }
 
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> findByIdTypeArticle(@PathVariable("id")String id){
+        HashMap<String,Object> data = new HashMap<>();
+
+        try{
+            TypeArticle typeArticle = typeArticleService.getEntityById(id).get();
+            data.put("typeArticle",typeArticle);
+            return new ResponseEntity<>(data, HttpStatus.OK);
+        }catch(Exception e){
+            data.put("error",e.getMessage());
+            return ResponseEntity.badRequest().body(data);
+        }
+    }
+
 
     @PostMapping
     public ResponseEntity<Object> createTypeArticle(@RequestBody TypeArticle typeArticle){

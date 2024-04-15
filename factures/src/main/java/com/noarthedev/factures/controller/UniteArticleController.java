@@ -6,11 +6,13 @@ import java.util.HashMap;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import com.noarthedev.factures.entity.UniteArticle;
 import com.noarthedev.factures.service.UniteArticleService;
 
 @RestController
 @RequestMapping("/uniteArticles")
+@CrossOrigin("*")
 
 public class UniteArticleController  {
     @Autowired  UniteArticleService uniteArticleService;
@@ -28,6 +30,21 @@ public class UniteArticleController  {
         }
 
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> findByIdUniteArticle(@PathVariable("id")String id){
+        HashMap<String,Object> data = new HashMap<>();
+
+        try{
+            UniteArticle uniteArticle = uniteArticleService.getEntityById(id).get();
+            data.put("uniteArticle",uniteArticle);
+            return new ResponseEntity<>(data, HttpStatus.OK);
+        }catch(Exception e){
+            data.put("error",e.getMessage());
+            return ResponseEntity.badRequest().body(data);
+        }
+    }
+
 
     @PostMapping
     public ResponseEntity<Object> createUniteArticle(@RequestBody UniteArticle uniteArticle){

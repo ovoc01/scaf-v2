@@ -18,7 +18,6 @@ import com.noarthedev.scaffold.template.lang.ProgrammingLangSyntax;
 import lombok.Data;
 
 @Data
-
 public class TableSchema {
 
     String tableName;
@@ -228,6 +227,10 @@ public class TableSchema {
 
         for (ImportedKey key : importedKeys) {
             sb.append(key.toGetterAndSetter(pSyntax));
+        }
+        PrimaryKey pk = primaryKey.get();
+        if(pk!=null){
+            sb.append(pk.toGetterAndSetter(pSyntax));
         }
 
         

@@ -6,11 +6,13 @@ import java.util.HashMap;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import com.noarthedev.factures.entity.Facture;
 import com.noarthedev.factures.service.FactureService;
 
 @RestController
 @RequestMapping("/factures")
+@CrossOrigin("*")
 
 public class FactureController  {
     @Autowired  FactureService factureService;
@@ -28,6 +30,21 @@ public class FactureController  {
         }
 
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> findByIdFacture(@PathVariable("id")String id){
+        HashMap<String,Object> data = new HashMap<>();
+
+        try{
+            Facture facture = factureService.getEntityById(id).get();
+            data.put("facture",facture);
+            return new ResponseEntity<>(data, HttpStatus.OK);
+        }catch(Exception e){
+            data.put("error",e.getMessage());
+            return ResponseEntity.badRequest().body(data);
+        }
+    }
+
 
     @PostMapping
     public ResponseEntity<Object> createFacture(@RequestBody Facture facture){
