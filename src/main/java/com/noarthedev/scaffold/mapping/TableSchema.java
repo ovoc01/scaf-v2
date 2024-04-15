@@ -348,7 +348,7 @@ public class TableSchema {
             NoSuchMethodException, SecurityException, IOException, FormatterException {
         Formulaire formulaire = this.createFormulaire();
         String view = formulaire.getHTMLString();
-        view = view.replace("@tableName", this.getTableName());
+        view = view.replace("@tableName", Helper.toCamelCase(this.getTableName()));
         Map<String, String> configs = getCongig();
         for (Map.Entry<String, String> entry : configs.entrySet()) {
             String key = entry.getKey();
