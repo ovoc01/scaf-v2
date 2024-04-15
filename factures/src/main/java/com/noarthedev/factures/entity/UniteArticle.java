@@ -27,27 +27,27 @@ public class UniteArticle  {
     String description;
 
     @OneToMany(fetch=FetchType.LAZY, mappedBy="uniteArticle", cascade=CascadeType.ALL)
-    @JsonManagedReference    
+    @JsonBackReference    
     List<Article>article;
 
     
 
     
-    public void setDescription(String description){
-        this.description = description;
-    }
-
-    public String getDescription(){
-        return this.description;
-    }
-
-
     public void setId(String id){
         this.id = id;
     }
 
     public String getId(){
         return this.id;
+    }
+
+
+    public void setDescription(String description){
+        this.description = description;
+    }
+
+    public String getDescription(){
+        return this.description;
     }
 
 

@@ -69,8 +69,11 @@ public abstract class CodeGenerator {
       //System.out.println("this is fddd"+ schema.getPrimaryKey().isEmpty());
 
 
-      if(!schema.getPrimaryKey().isEmpty()){
+
+      if(schema.getPrimaryKey()!=null && !schema.getPrimaryKey().isEmpty()){
          placeholder.put("[primaryKeyColName]",schema.getPrimaryKey().get().getName());
+         placeholder.put("##primaryKeyType", schema.getPrimaryKey().get().getType());
+         placeholder.put("##primaryKeyName", schema.getPrimaryKey().get().getName());
       }
       placeholder.put("##first3", schema.first3Letters());
       placeholder.put("##dbName",schema.getDatabase());
@@ -92,8 +95,6 @@ public abstract class CodeGenerator {
       // TODO: update service, controller template to be able to render conditionally
       // method that include primaryKey
 
-      placeholder.put("##primaryKeyType", schema.getPrimaryKey().get().getType());
-      placeholder.put("##primaryKeyName", schema.getPrimaryKey().get().getName());
 
       template = implementationOfExtraReplacement(template);
       String generate = TemplateHelper.replacePlaceholders(template, placeholder);

@@ -26,27 +26,27 @@ public class Fac  {
     
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="id_facture")
-    @JsonBackReference
+    @JsonManagedReference
     Facture facture;
 
     
 
     
-    public void setFacture(Facture facture){
-        this.facture = facture;
-    }
-
-    public Facture getFacture(){
-        return this.facture;
-    }
-
-
     public void setId(Long id){
         this.id = id;
     }
 
     public Long getId(){
         return this.id;
+    }
+
+
+    public void setFacture(Facture facture){
+        this.facture = facture;
+    }
+
+    public Facture getFacture(){
+        return this.facture;
     }
 
 
