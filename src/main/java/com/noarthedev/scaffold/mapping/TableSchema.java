@@ -141,7 +141,7 @@ public class TableSchema {
             if (primaryKey != null && !col.equals(primaryKey.get())) {
                 String coln = "";
                 if (!inUse.getEntity().getColumnMark().equals("none")) {
-                    coln = marks.replace(":mark", inUse.getEntity().getColumnMark());
+                    coln = marks.replace(":mark", inUse.getEntity().getColumnMark().replace("##column_name", col.getName()));
                 }
                 if (a > 0) {
                     sb.append(Helper.identation());
@@ -285,9 +285,11 @@ public class TableSchema {
             InvocationTargetException, NoSuchMethodException, SecurityException, IOException {
         List<Column> columns = this.realCol();
         Champ[] champs = new Champ[columns.size()];
-
-        if (columns.size() == 0)
-            throw new IllegalArgumentException("No argument in obj");
+        System.out.println("====" + tableName + "======");
+        /*
+         * if (columns.size() == 0)
+         * throw new IllegalArgumentException("No argument in obj");
+         */
 
         Template template = new Template().createTemplate("template/config.properties");
         for (int i = 0; i < columns.size(); i++) {
