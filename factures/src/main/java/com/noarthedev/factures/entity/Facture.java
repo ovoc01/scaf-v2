@@ -34,16 +34,25 @@ public class Facture  {
     Double montanttotal;
 
     @OneToMany(fetch=FetchType.LAZY, mappedBy="facture", cascade=CascadeType.ALL)
-    @JsonManagedReference    
+    @JsonBackReference    
     List<DetailFacture>detailFacture;
 
     @OneToMany(fetch=FetchType.LAZY, mappedBy="facture", cascade=CascadeType.ALL)
-    @JsonManagedReference    
+    @JsonBackReference    
     List<Fac>fac;
 
     
 
     
+    public void setId(String id){
+        this.id = id;
+    }
+
+    public String getId(){
+        return this.id;
+    }
+
+
     public void setDaty(Date daty){
         this.daty = daty;
     }
@@ -77,15 +86,6 @@ public class Facture  {
 
     public Double getMontanttotal(){
         return this.montanttotal;
-    }
-
-
-    public void setId(String id){
-        this.id = id;
-    }
-
-    public String getId(){
-        return this.id;
     }
 
 

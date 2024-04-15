@@ -138,7 +138,7 @@ public class TableSchema {
         int a = 0;
         List<Column> real = realCol();
         for (Column col : real) {
-            if (!col.equals(primaryKey.get())) {
+            if (primaryKey!=null && !col.equals(primaryKey.get())) {
                 String coln = "";
                 if (!inUse.getEntity().getColumnMark().equals("none")) {
                     coln = marks.replace(":mark", inUse.getEntity().getColumnMark());
@@ -235,13 +235,13 @@ public class TableSchema {
     public String allGetterAndSetters() {
         StringBuilder sb = new StringBuilder();
         List<Column> real = realCol();
-        PrimaryKey pk = primaryKey.get();
+        PrimaryKey pk = (primaryKey == null) ? null : primaryKey.get() ;
 
 
         if(pk!=null){
             sb.append(pk.toGetterAndSetter(pSyntax));
         }
-        
+
         for (Column col : real) {
             sb.append(col.toGetterAndSetter(pSyntax));
         }

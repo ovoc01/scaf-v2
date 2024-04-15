@@ -32,17 +32,26 @@ public class DetailFacture  {
 
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="article")
-    @JsonBackReference
+    @JsonManagedReference
     Article article;
 
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="idfacture")
-    @JsonBackReference
+    @JsonManagedReference
     Facture facture;
 
     
 
     
+    public void setId(String id){
+        this.id = id;
+    }
+
+    public String getId(){
+        return this.id;
+    }
+
+
     public void setQuantite(Double quantite){
         this.quantite = quantite;
     }
@@ -85,15 +94,6 @@ public class DetailFacture  {
 
     public Facture getFacture(){
         return this.facture;
-    }
-
-
-    public void setId(String id){
-        this.id = id;
-    }
-
-    public String getId(){
-        return this.id;
     }
 
 

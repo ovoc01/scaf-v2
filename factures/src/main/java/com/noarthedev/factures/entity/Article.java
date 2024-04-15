@@ -31,22 +31,31 @@ public class Article  {
     Double pu;
 
     @OneToMany(fetch=FetchType.LAZY, mappedBy="article", cascade=CascadeType.ALL)
-    @JsonManagedReference    
+    @JsonBackReference    
     List<DetailFacture>detailFacture;
 
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="type")
-    @JsonBackReference
+    @JsonManagedReference
     TypeArticle typeArticle;
 
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="unite")
-    @JsonBackReference
+    @JsonManagedReference
     UniteArticle uniteArticle;
 
     
 
     
+    public void setId(String id){
+        this.id = id;
+    }
+
+    public String getId(){
+        return this.id;
+    }
+
+
     public void setCode(String code){
         this.code = code;
     }
@@ -89,15 +98,6 @@ public class Article  {
 
     public UniteArticle getUniteArticle(){
         return this.uniteArticle;
-    }
-
-
-    public void setId(String id){
-        this.id = id;
-    }
-
-    public String getId(){
-        return this.id;
     }
 
 
