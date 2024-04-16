@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <div class="container-header">
-      <h1>@tableNames</h1>
+      <h1>factures</h1>
       <span class="add">
         <button class="btn-add" v-on:click="showDialog">
-          Add @tableNames
+          Add factures
         </button>
       </span>
     </div>
@@ -12,12 +12,22 @@
       <table class="table">
         <thead>
           <tr>
-            @HeadersTable
+            <th>Id</th>
+<th>Daty</th>
+<th>Designation</th>
+<th>Etat</th>
+<th>Montanttotal</th>
+
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(@tableName, id) in @tableNames" :key="id">
-            @TableContent
+          <tr v-for="(facture, id) in factures" :key="id">
+            <th>{{ facture.id }}</th>
+<th>{{ facture.daty }}</th>
+<th>{{ facture.designation }}</th>
+<th>{{ facture.etat }}</th>
+<th>{{ facture.montanttotal }}</th>
+
             <th>
               <span class="action-container">
                 <button class="btn edit" @click="editFramework(id)">Edit</button>
@@ -32,11 +42,23 @@
 
     </div>
 
-    <dialog id="dialog-@tableNames"> <!-- Ovaina par rapport am anarany ilay tableschema -->
-      <p>Add new @tableName</p>
+    <dialog id="dialog-factures"> <!-- Ovaina par rapport am anarany ilay tableschema -->
+      <p>Add new facture</p>
       <div class="form-container">
         <form>
-          @champs
+          <div class="input-group">
+    <label for="daty">daty:</label>
+    <input id="daty" type="text" name="daty" v-model="daty">
+</div><div class="input-group">
+    <label for="designation">designation:</label>
+    <input id="designation" type="text" name="designation" v-model="designation">
+</div><div class="input-group">
+    <label for="etat">etat:</label>
+    <input id="etat" type="text" name="etat" v-model="etat">
+</div><div class="input-group">
+    <label for="montanttotal">montanttotal:</label>
+    <input id="montanttotal" type="text" name="montanttotal" v-model="montanttotal">
+</div>
           <div class=" button-group">
             <button class="btn delete" @click.prevent="closeDialog">Cancel</button>
             <div>
@@ -223,20 +245,6 @@ dialog p {
   color: white;
   border: none;
 }
-
-select {
-  background-color: white;
-  padding: 8px;
-  font-size: 16px;
-  border: none;
-  border-radius: 4px;
-  width: calc(100% - 110px);
-  /* Adjust as needed */
-  box-sizing: border-box;
-  display: inline-block;
-  height: 35px;
-  border: 1px solid #ccc;
-}
 </style>
 
 <script>
@@ -247,8 +255,13 @@ export default {
   
   data() {
     return { 
-        @tableNames: [],
-        @Empty
+        factures: [],
+        id: '',
+daty: '',
+designation: '',
+etat: '',
+montanttotal: '',
+
         isToUpdate: false,
         dialog: null
     }
@@ -257,8 +270,8 @@ export default {
   methods: {
     
     async fetchItems() {
-      const response = await axios.get('http://localhost:8080/@tableNames.do')
-      this.@tableNames = response.data.@tableNames
+      const response = await axios.get('http://localhost:8080/factures.do')
+      this.factures = response.data.factures
     },
     
     async updateForm() {
@@ -267,16 +280,21 @@ export default {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          @RequestBody
+          id: this.id,
+daty: this.daty,
+designation: this.designation,
+etat: this.etat,
+montanttotal: this.montanttotal,
+
         })
       }
       
       const response = await fetch(
-        'http://localhost:8080/@tableNames.do',
+        'http://localhost:8080/factures.do',
         request
       )
       const data = await response.json()
-      this.@tableNames.push(data)
+      this.factures.push(data)
     },
 
     showDialog () {
@@ -289,22 +307,32 @@ export default {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          @RequestBody
+          id: this.id,
+daty: this.daty,
+designation: this.designation,
+etat: this.etat,
+montanttotal: this.montanttotal,
+
         })
       }
       const response = await fetch(
-        'http://localhost:8080/@tableNames.do',
+        'http://localhost:8080/factures.do',
         request
       )
       const data = await response.json()
-      this.@tableNames.push(data)
+      this.factures.push(data)
       this.resetField()
       // Close the dialog
       this.dialog.close();
     },
 
     resetField() {
-      @Initialisation
+      this.id = ''
+this.daty = ''
+this.designation = ''
+this.etat = ''
+this.montanttotal = ''
+
     },
 
     closeDialog() {
@@ -315,18 +343,43 @@ export default {
 
     editFramework(index) {
       this.isToUpdate = true;
-      const item = this.@tableNames[index];
-      @ItemInitialisation
+      const item = this.factures[index];
+      this.id = item.id
+this.daty = item.daty
+this.designation = item.designation
+this.etat = item.etat
+this.montanttotal = item.montanttotal
+
       this.showDialog(); 
     }
     ,
 
-    @ForeignKey
+    async fetchItems() {
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/factures.do')
+this.factures = response.data.factures
+},
+async fetchItems() {
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/factures.do')
+this.factures = response.data.factures
+},
+async fetchItems() {
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/factures.do')
+this.factures = response.data.factures
+},
+async fetchItems() {
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/factures.do')
+this.factures = response.data.factures
+},
+async fetchItems() {
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/factures.do')
+this.factures = response.data.factures
+},
+
 
   },
 
   mounted() {
-    this.dialog = document.getElementById("dialog-@tableNames")
+    this.dialog = document.getElementById("dialog-factures")
     this.fetchItems()
   }
 }

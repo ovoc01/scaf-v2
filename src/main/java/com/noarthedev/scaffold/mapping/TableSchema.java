@@ -358,4 +358,10 @@ public class TableSchema {
         return view;
     }
 
+
+
+    public String generateRoute() {
+        return null;
+    }
+
 }

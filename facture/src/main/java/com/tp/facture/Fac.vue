@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <div class="container-header">
-      <h1>@tableNames</h1>
+      <h1>facs</h1>
       <span class="add">
         <button class="btn-add" v-on:click="showDialog">
-          Add @tableNames
+          Add facs
         </button>
       </span>
     </div>
@@ -12,12 +12,16 @@
       <table class="table">
         <thead>
           <tr>
-            @HeadersTable
+            <th>Id</th>
+<th>Id Facture</th>
+
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(@tableName, id) in @tableNames" :key="id">
-            @TableContent
+          <tr v-for="(fac, id) in facs" :key="id">
+            <th>{{ fac.id }}</th>
+<th>{{ fac.idFacture }}</th>
+
             <th>
               <span class="action-container">
                 <button class="btn edit" @click="editFramework(id)">Edit</button>
@@ -32,11 +36,11 @@
 
     </div>
 
-    <dialog id="dialog-@tableNames"> <!-- Ovaina par rapport am anarany ilay tableschema -->
-      <p>Add new @tableName</p>
+    <dialog id="dialog-facs"> <!-- Ovaina par rapport am anarany ilay tableschema -->
+      <p>Add new fac</p>
       <div class="form-container">
         <form>
-          @champs
+          
           <div class=" button-group">
             <button class="btn delete" @click.prevent="closeDialog">Cancel</button>
             <div>
@@ -223,20 +227,6 @@ dialog p {
   color: white;
   border: none;
 }
-
-select {
-  background-color: white;
-  padding: 8px;
-  font-size: 16px;
-  border: none;
-  border-radius: 4px;
-  width: calc(100% - 110px);
-  /* Adjust as needed */
-  box-sizing: border-box;
-  display: inline-block;
-  height: 35px;
-  border: 1px solid #ccc;
-}
 </style>
 
 <script>
@@ -247,8 +237,10 @@ export default {
   
   data() {
     return { 
-        @tableNames: [],
-        @Empty
+        facs: [],
+        id: '',
+idFacture: '',
+
         isToUpdate: false,
         dialog: null
     }
@@ -257,8 +249,8 @@ export default {
   methods: {
     
     async fetchItems() {
-      const response = await axios.get('http://localhost:8080/@tableNames.do')
-      this.@tableNames = response.data.@tableNames
+      const response = await axios.get('http://localhost:8080/facs.do')
+      this.facs = response.data.facs
     },
     
     async updateForm() {
@@ -267,16 +259,18 @@ export default {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          @RequestBody
+          id: this.id,
+idFacture: this.idFacture,
+
         })
       }
       
       const response = await fetch(
-        'http://localhost:8080/@tableNames.do',
+        'http://localhost:8080/facs.do',
         request
       )
       const data = await response.json()
-      this.@tableNames.push(data)
+      this.facs.push(data)
     },
 
     showDialog () {
@@ -289,22 +283,26 @@ export default {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          @RequestBody
+          id: this.id,
+idFacture: this.idFacture,
+
         })
       }
       const response = await fetch(
-        'http://localhost:8080/@tableNames.do',
+        'http://localhost:8080/facs.do',
         request
       )
       const data = await response.json()
-      this.@tableNames.push(data)
+      this.facs.push(data)
       this.resetField()
       // Close the dialog
       this.dialog.close();
     },
 
     resetField() {
-      @Initialisation
+      this.id = ''
+this.idFacture = ''
+
     },
 
     closeDialog() {
@@ -315,18 +313,28 @@ export default {
 
     editFramework(index) {
       this.isToUpdate = true;
-      const item = this.@tableNames[index];
-      @ItemInitialisation
+      const item = this.facs[index];
+      this.id = item.id
+this.idFacture = item.idFacture
+
       this.showDialog(); 
     }
     ,
 
-    @ForeignKey
+    async fetchItems() {
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/facs.do')
+this.facs = response.data.facs
+},
+async fetchItems() {
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/facs.do')
+this.facs = response.data.facs
+},
+
 
   },
 
   mounted() {
-    this.dialog = document.getElementById("dialog-@tableNames")
+    this.dialog = document.getElementById("dialog-facs")
     this.fetchItems()
   }
 }

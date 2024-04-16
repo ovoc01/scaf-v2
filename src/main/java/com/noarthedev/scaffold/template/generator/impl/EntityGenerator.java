@@ -66,9 +66,15 @@ public class EntityGenerator extends CodeGenerator {
     @Override
     protected String implementationOfExtraReplacement(String temp) {
         if (schema.isPrimaryKeyPresent()) {
+            String [] marks = null;
             String idMarks = "";
             if (!inUse.getEntity().getIdMarks().equals("none"))
-                idMarks = inUse.getPSyntax().getAnnotation().replace(":mark", inUse.getEntity().getIdMarks());
+            marks = inUse.getEntity().getIdMarks().split(",");
+            for(String m : marks){
+                idMarks += inUse.getPSyntax().getAnnotation().replace(":mark", m)+"\n"+Helper.identation();
+                
+            }
+            
             temp = temp.replace("@?[id-marks]", idMarks);
             temp = temp.replace("?[Id]", schema.getPrimaryKey().get().toString());
         }
