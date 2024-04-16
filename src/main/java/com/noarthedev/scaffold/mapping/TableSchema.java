@@ -361,7 +361,11 @@ public class TableSchema {
 
 
     public String generateRoute() {
-        return null;
+        StringBuilder sb = new StringBuilder().append("{").append("\n");
+        sb.append("element:").append(Helper.toPascalCase(this.getTableName())).append(",\n");
+        sb.append("path:'/").append(Helper.toCamelCase(this.getTableName()));
+        sb.append("'\n},\n");
+        return sb.toString();
     }
 
 }

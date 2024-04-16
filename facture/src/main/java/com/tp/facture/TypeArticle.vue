@@ -19,8 +19,8 @@
         </thead>
         <tbody>
           <tr v-for="(typeArticle, id) in typeArticles" :key="id">
-            <th>{{ type_article.id }}</th>
-<th>{{ type_article.description }}</th>
+            <th>{{ typeArticle.id }}</th>
+<th>{{ typeArticle.description }}</th>
 
             <th>
               <span class="action-container">
@@ -230,6 +230,20 @@ dialog p {
   color: white;
   border: none;
 }
+
+select {
+  background-color: white;
+  padding: 8px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  width: calc(100% - 110px);
+  /* Adjust as needed */
+  box-sizing: border-box;
+  display: inline-block;
+  height: 35px;
+  border: 1px solid #ccc;
+}
 </style>
 
 <script>
@@ -325,12 +339,12 @@ this.description = item.description
     ,
 
     async fetchItems() {
-const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/type_articles.do')
-this.type_articles = response.data.type_articles
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/typeArticles.do')
+this.typeArticles = response.data.typeArticles
 },
 async fetchItems() {
-const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/type_articles.do')
-this.type_articles = response.data.type_articles
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/typeArticles.do')
+this.typeArticles = response.data.typeArticles
 },
 
 

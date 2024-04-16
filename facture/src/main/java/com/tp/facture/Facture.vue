@@ -245,6 +245,20 @@ dialog p {
   color: white;
   border: none;
 }
+
+select {
+  background-color: white;
+  padding: 8px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  width: calc(100% - 110px);
+  /* Adjust as needed */
+  box-sizing: border-box;
+  display: inline-block;
+  height: 35px;
+  border: 1px solid #ccc;
+}
 </style>
 
 <script>

@@ -23,12 +23,12 @@
         </thead>
         <tbody>
           <tr v-for="(detailFacture, id) in detailFactures" :key="id">
-            <th>{{ detail_facture.id }}</th>
-<th>{{ detail_facture.article }}</th>
-<th>{{ detail_facture.quantite }}</th>
-<th>{{ detail_facture.pu }}</th>
-<th>{{ detail_facture.idfacture }}</th>
-<th>{{ detail_facture.montant }}</th>
+            <th>{{ detailFacture.id }}</th>
+<th>{{ detailFacture.article }}</th>
+<th>{{ detailFacture.quantite }}</th>
+<th>{{ detailFacture.pu }}</th>
+<th>{{ detailFacture.idfacture }}</th>
+<th>{{ detailFacture.montant }}</th>
 
             <th>
               <span class="action-container">
@@ -244,6 +244,20 @@ dialog p {
   color: white;
   border: none;
 }
+
+select {
+  background-color: white;
+  padding: 8px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  width: calc(100% - 110px);
+  /* Adjust as needed */
+  box-sizing: border-box;
+  display: inline-block;
+  height: 35px;
+  border: 1px solid #ccc;
+}
 </style>
 
 <script>
@@ -359,28 +373,28 @@ this.montant = item.montant
     ,
 
     async fetchItems() {
-const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/detail_factures.do')
-this.detail_factures = response.data.detail_factures
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/detailFactures.do')
+this.detailFactures = response.data.detailFactures
 },
 async fetchItems() {
-const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/detail_factures.do')
-this.detail_factures = response.data.detail_factures
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/detailFactures.do')
+this.detailFactures = response.data.detailFactures
 },
 async fetchItems() {
-const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/detail_factures.do')
-this.detail_factures = response.data.detail_factures
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/detailFactures.do')
+this.detailFactures = response.data.detailFactures
 },
 async fetchItems() {
-const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/detail_factures.do')
-this.detail_factures = response.data.detail_factures
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/detailFactures.do')
+this.detailFactures = response.data.detailFactures
 },
 async fetchItems() {
-const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/detail_factures.do')
-this.detail_factures = response.data.detail_factures
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/detailFactures.do')
+this.detailFactures = response.data.detailFactures
 },
 async fetchItems() {
-const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/detail_factures.do')
-this.detail_factures = response.data.detail_factures
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/detailFactures.do')
+this.detailFactures = response.data.detailFactures
 },
 
 

@@ -19,8 +19,8 @@
         </thead>
         <tbody>
           <tr v-for="(uniteArticle, id) in uniteArticles" :key="id">
-            <th>{{ unite_article.id }}</th>
-<th>{{ unite_article.description }}</th>
+            <th>{{ uniteArticle.id }}</th>
+<th>{{ uniteArticle.description }}</th>
 
             <th>
               <span class="action-container">
@@ -230,6 +230,20 @@ dialog p {
   color: white;
   border: none;
 }
+
+select {
+  background-color: white;
+  padding: 8px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  width: calc(100% - 110px);
+  /* Adjust as needed */
+  box-sizing: border-box;
+  display: inline-block;
+  height: 35px;
+  border: 1px solid #ccc;
+}
 </style>
 
 <script>
@@ -325,12 +339,12 @@ this.description = item.description
     ,
 
     async fetchItems() {
-const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/unite_articles.do')
-this.unite_articles = response.data.unite_articles
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/uniteArticles.do')
+this.uniteArticles = response.data.uniteArticles
 },
 async fetchItems() {
-const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/unite_articles.do')
-this.unite_articles = response.data.unite_articles
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/uniteArticles.do')
+this.uniteArticles = response.data.uniteArticles
 },
 
 
