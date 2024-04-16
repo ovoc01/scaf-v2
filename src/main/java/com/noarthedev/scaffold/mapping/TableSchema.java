@@ -333,7 +333,7 @@ public class TableSchema {
     public String generateChamp(String type) {
         Map<String, String> configs = getCongig();
         String template = configs.get(type)
-                        .replace("@tableName", this.getTableName());
+                        .replace("@tableName", Helper.toCamelCase(this.getTableName()));
         StringBuilder stringBuilder = new StringBuilder();
         for (Column column : this.getColumns()) {
             stringBuilder.append(template
