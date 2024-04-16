@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <div class="container-header">
-      <h1>@tableNames</h1>
+      <h1>articles</h1>
       <span class="add">
         <button class="btn-add" v-on:click="showDialog">
-          Add @tableNames
+          Add articles
         </button>
       </span>
     </div>
@@ -12,12 +12,24 @@
       <table class="table">
         <thead>
           <tr>
-            @HeadersTable
+            <th>Id</th>
+<th>Code</th>
+<th>Designation</th>
+<th>Unite</th>
+<th>Type</th>
+<th>Pu</th>
+
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(@tableName, id) in @tableNames" :key="id">
-            @TableContent
+          <tr v-for="(article, id) in articles" :key="id">
+            <th>{{ article.id }}</th>
+<th>{{ article.code }}</th>
+<th>{{ article.designation }}</th>
+<th>{{ article.unite }}</th>
+<th>{{ article.type }}</th>
+<th>{{ article.pu }}</th>
+
             <th>
               <span class="action-container">
                 <button class="btn edit" @click="editFramework(id)">Edit</button>
@@ -32,11 +44,20 @@
 
     </div>
 
-    <dialog id="dialog-@tableNames"> <!-- Ovaina par rapport am anarany ilay tableschema -->
-      <p>Add new @tableName</p>
+    <dialog id="dialog-articles"> <!-- Ovaina par rapport am anarany ilay tableschema -->
+      <p>Add new article</p>
       <div class="form-container">
         <form>
-          @champs
+          <div class="input-group">
+    <label for="code">code:</label>
+    <input id="code" type="text" name="code" v-model="code">
+</div><div class="input-group">
+    <label for="designation">designation:</label>
+    <input id="designation" type="text" name="designation" v-model="designation">
+</div><div class="input-group">
+    <label for="pu">pu:</label>
+    <input id="pu" type="text" name="pu" v-model="pu">
+</div>
           <div class=" button-group">
             <button class="btn delete" @click.prevent="closeDialog">Cancel</button>
             <div>
@@ -247,8 +268,14 @@ export default {
   
   data() {
     return { 
-        @tableNames: [],
-        @Empty
+        articles: [],
+        id: '',
+code: '',
+designation: '',
+unite: '',
+type: '',
+pu: '',
+
         isToUpdate: false,
         dialog: null
     }
@@ -257,8 +284,8 @@ export default {
   methods: {
     
     async fetchItems() {
-      const response = await axios.get('http://localhost:8080/@tableNames.do')
-      this.@tableNames = response.data.@tableNames
+      const response = await axios.get('http://localhost:8080/articles.do')
+      this.articles = response.data.articles
     },
     
     async updateForm() {
@@ -267,16 +294,22 @@ export default {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          @RequestBody
+          id: this.id,
+code: this.code,
+designation: this.designation,
+unite: this.unite,
+type: this.type,
+pu: this.pu,
+
         })
       }
       
       const response = await fetch(
-        'http://localhost:8080/@tableNames.do',
+        'http://localhost:8080/articles.do',
         request
       )
       const data = await response.json()
-      this.@tableNames.push(data)
+      this.articles.push(data)
     },
 
     showDialog () {
@@ -289,22 +322,34 @@ export default {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          @RequestBody
+          id: this.id,
+code: this.code,
+designation: this.designation,
+unite: this.unite,
+type: this.type,
+pu: this.pu,
+
         })
       }
       const response = await fetch(
-        'http://localhost:8080/@tableNames.do',
+        'http://localhost:8080/articles.do',
         request
       )
       const data = await response.json()
-      this.@tableNames.push(data)
+      this.articles.push(data)
       this.resetField()
       // Close the dialog
       this.dialog.close();
     },
 
     resetField() {
-      @Initialisation
+      this.id = ''
+this.code = ''
+this.designation = ''
+this.unite = ''
+this.type = ''
+this.pu = ''
+
     },
 
     closeDialog() {
@@ -315,18 +360,48 @@ export default {
 
     editFramework(index) {
       this.isToUpdate = true;
-      const item = this.@tableNames[index];
-      @ItemInitialisation
+      const item = this.articles[index];
+      this.id = item.id
+this.code = item.code
+this.designation = item.designation
+this.unite = item.unite
+this.type = item.type
+this.pu = item.pu
+
       this.showDialog(); 
     }
     ,
 
-    @ForeignKey
+    async fetchItems() {
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/articles.do')
+this.articles = response.data.articles
+},
+async fetchItems() {
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/articles.do')
+this.articles = response.data.articles
+},
+async fetchItems() {
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/articles.do')
+this.articles = response.data.articles
+},
+async fetchItems() {
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/articles.do')
+this.articles = response.data.articles
+},
+async fetchItems() {
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/articles.do')
+this.articles = response.data.articles
+},
+async fetchItems() {
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/articles.do')
+this.articles = response.data.articles
+},
+
 
   },
 
   mounted() {
-    this.dialog = document.getElementById("dialog-@tableNames")
+    this.dialog = document.getElementById("dialog-articles")
     this.fetchItems()
   }
 }

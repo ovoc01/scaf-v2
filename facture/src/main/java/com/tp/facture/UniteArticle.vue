@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <div class="container-header">
-      <h1>@tableNames</h1>
+      <h1>uniteArticles</h1>
       <span class="add">
         <button class="btn-add" v-on:click="showDialog">
-          Add @tableNames
+          Add uniteArticles
         </button>
       </span>
     </div>
@@ -12,12 +12,16 @@
       <table class="table">
         <thead>
           <tr>
-            @HeadersTable
+            <th>Id</th>
+<th>Description</th>
+
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(@tableName, id) in @tableNames" :key="id">
-            @TableContent
+          <tr v-for="(uniteArticle, id) in uniteArticles" :key="id">
+            <th>{{ uniteArticle.id }}</th>
+<th>{{ uniteArticle.description }}</th>
+
             <th>
               <span class="action-container">
                 <button class="btn edit" @click="editFramework(id)">Edit</button>
@@ -32,11 +36,14 @@
 
     </div>
 
-    <dialog id="dialog-@tableNames"> <!-- Ovaina par rapport am anarany ilay tableschema -->
-      <p>Add new @tableName</p>
+    <dialog id="dialog-uniteArticles"> <!-- Ovaina par rapport am anarany ilay tableschema -->
+      <p>Add new uniteArticle</p>
       <div class="form-container">
         <form>
-          @champs
+          <div class="input-group">
+    <label for="description">description:</label>
+    <input id="description" type="text" name="description" v-model="description">
+</div>
           <div class=" button-group">
             <button class="btn delete" @click.prevent="closeDialog">Cancel</button>
             <div>
@@ -247,8 +254,10 @@ export default {
   
   data() {
     return { 
-        @tableNames: [],
-        @Empty
+        uniteArticles: [],
+        id: '',
+description: '',
+
         isToUpdate: false,
         dialog: null
     }
@@ -257,8 +266,8 @@ export default {
   methods: {
     
     async fetchItems() {
-      const response = await axios.get('http://localhost:8080/@tableNames.do')
-      this.@tableNames = response.data.@tableNames
+      const response = await axios.get('http://localhost:8080/uniteArticles.do')
+      this.uniteArticles = response.data.uniteArticles
     },
     
     async updateForm() {
@@ -267,16 +276,18 @@ export default {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          @RequestBody
+          id: this.id,
+description: this.description,
+
         })
       }
       
       const response = await fetch(
-        'http://localhost:8080/@tableNames.do',
+        'http://localhost:8080/uniteArticles.do',
         request
       )
       const data = await response.json()
-      this.@tableNames.push(data)
+      this.uniteArticles.push(data)
     },
 
     showDialog () {
@@ -289,22 +300,26 @@ export default {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          @RequestBody
+          id: this.id,
+description: this.description,
+
         })
       }
       const response = await fetch(
-        'http://localhost:8080/@tableNames.do',
+        'http://localhost:8080/uniteArticles.do',
         request
       )
       const data = await response.json()
-      this.@tableNames.push(data)
+      this.uniteArticles.push(data)
       this.resetField()
       // Close the dialog
       this.dialog.close();
     },
 
     resetField() {
-      @Initialisation
+      this.id = ''
+this.description = ''
+
     },
 
     closeDialog() {
@@ -315,18 +330,28 @@ export default {
 
     editFramework(index) {
       this.isToUpdate = true;
-      const item = this.@tableNames[index];
-      @ItemInitialisation
+      const item = this.uniteArticles[index];
+      this.id = item.id
+this.description = item.description
+
       this.showDialog(); 
     }
     ,
 
-    @ForeignKey
+    async fetchItems() {
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/uniteArticles.do')
+this.uniteArticles = response.data.uniteArticles
+},
+async fetchItems() {
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/uniteArticles.do')
+this.uniteArticles = response.data.uniteArticles
+},
+
 
   },
 
   mounted() {
-    this.dialog = document.getElementById("dialog-@tableNames")
+    this.dialog = document.getElementById("dialog-uniteArticles")
     this.fetchItems()
   }
 }

@@ -34,6 +34,7 @@ public class BasePart {
 
         Map<String, Object> map = Helper.stringToMap(fileContent);
         BasePart part = new BasePart(CLASS_PART);
+
         try {
             part.setPSyntax(pSyntax);
             part.setAnnotations(map.get(CLASS_PART + ".annotation").toString().split(","));

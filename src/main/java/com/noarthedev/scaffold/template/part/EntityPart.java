@@ -57,8 +57,10 @@ public class EntityPart extends BasePart {
 
     public void setIdMarks(Object object) {
         ////System.out.println("eto asika " + object);
-        if (object == null) this.idMarks = "";
-
+        if (object == null) {
+            this.idMarks = "";
+            return;
+        }
         this.idMarks = object.toString();
     }
 

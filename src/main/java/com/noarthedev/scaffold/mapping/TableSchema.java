@@ -358,4 +358,14 @@ public class TableSchema {
         return view;
     }
 
+
+
+    public String generateRoute() {
+        StringBuilder sb = new StringBuilder().append("{").append("\n");
+        sb.append("element:").append(Helper.toPascalCase(this.getTableName())).append(",\n");
+        sb.append("path:'/").append(Helper.toCamelCase(this.getTableName()));
+        sb.append("'\n},\n");
+        return sb.toString();
+    }
+
 }

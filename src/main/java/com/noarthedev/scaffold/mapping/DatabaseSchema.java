@@ -23,16 +23,15 @@ public class DatabaseSchema {
   List<TableSchema> tables;
 
   public void toObject(Connection c, ProgrammingLangSyntax pLangSyntax, Framework frameworkInUse, String groupId,
-      String projectName,String fileToGenerate,boolean isCliGenerationPresent) throws SQLException, FormatterException {
-    final String BASE_PACKAGE = groupId+"."+projectName;
+      String projectName, String fileToGenerate, boolean isCliGenerationPresent)
+      throws SQLException, FormatterException {
+    final String BASE_PACKAGE = groupId + "." + projectName;
     final String FILE_EXTENSION = pLangSyntax.getFileExtension();
     String outputDir = "";
-    if(isCliGenerationPresent)outputDir = String.format("%s/src/main/java/%s/%s/", projectName, groupId.replace(".", "/"), projectName);
-    else outputDir = String.format("%s/%s/", projectName,groupId.replace(".", "/"));
-    
-    System.out.println("===========");
-    System.out.println(outputDir);
-    System.out.println("===========");
+    if (isCliGenerationPresent)
+      outputDir = String.format("%s/src/main/java/%s/%s/", projectName, groupId.replace(".", "/"), projectName);
+    else
+      outputDir = String.format("%s/%s/", projectName, groupId.replace(".", "/"));
 
     tables = new ArrayList<>();
     DatabaseMetaData databaseMetaData = c.getMetaData();
@@ -43,15 +42,12 @@ public class DatabaseSchema {
         null,
         new String[] { "TABLE" });
 
-
     try {
       while (tablesResultSet.next()) {
-        TableSchema tableSchema = new TableSchema(tablesResultSet, pLangSyntax, null, null,c.getCatalog());
+        TableSchema tableSchema = new TableSchema(tablesResultSet, pLangSyntax, null, null, c.getCatalog());
 
         // //System.out.println(tableSchema.getTableName());
 
-
-        
         ResultSet otherColResultSet = databaseMetaData.getColumns(
             null,
             null,
@@ -60,21 +56,17 @@ public class DatabaseSchema {
 
         tableSchema.intOtherColumn(otherColResultSet);
 
-
-        //ResultSet exportedKeysRs = databaseMetaData.getExportedKeys(null,null,tableSchema.getTableName());
+        // ResultSet exportedKeysRs =
+        // databaseMetaData.getExportedKeys(null,null,tableSchema.getTableName());
 
         tableSchema.initForeignKey(databaseMetaData);
 
-
-
         ResultSet primaryKeysResultSet = databaseMetaData.getPrimaryKeys(
-                null,
-                null,
-                tableSchema.getTableName());
+            null,
+            null,
+            tableSchema.getTableName());
 
         tableSchema.initOptionalPrimaryKey(primaryKeysResultSet);
-
-
 
         ArrayList<CodeGenerator> toGenerate = CodeGenerator.generate(tableSchema, frameworkInUse, BASE_PACKAGE,
             fileToGenerate);
@@ -86,21 +78,36 @@ public class DatabaseSchema {
           }
         }
 
-        Helper.generateFile(String.format("%s", Helper.toPascalCase(tableSchema.getTableName())), "vue", tableSchema.generateView(), outputDir);
+        Helper.generateFile(String.format("%s", Helper.toPascalCase(tableSchema.getTableName())), "vue",
+            tableSchema.generateView(), outputDir);
 
         // generator = new RepositoryGenerator(tableSchema, frameworkInUse,
         // BASE_PACKAGE);
-
+        // System.out.println(tableSchema.generateRoute());
         tables.add(tableSchema);
         // break;
       }
+
+      Helper.generateFile("route", "js", generateRoute(), outputDir);
+
     } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
         | IllegalArgumentException | InvocationTargetException | SQLException e) {
 
       e.printStackTrace();
     } catch (IOException e) {
-        throw new RuntimeException(e);
+      throw new RuntimeException(e);
     }
 
   }
+
+  private String generateRoute() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("const routes = [").append("\n");
+    for(TableSchema schema : tables){
+        sb.append(schema.generateRoute());
+    }
+    sb.append("]");
+    return sb.toString();
+  }
+
 }

@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <div class="container-header">
-      <h1>@tableNames</h1>
+      <h1>detailFactures</h1>
       <span class="add">
         <button class="btn-add" v-on:click="showDialog">
-          Add @tableNames
+          Add detailFactures
         </button>
       </span>
     </div>
@@ -12,12 +12,24 @@
       <table class="table">
         <thead>
           <tr>
-            @HeadersTable
+            <th>Id</th>
+<th>Article</th>
+<th>Quantite</th>
+<th>Pu</th>
+<th>Idfacture</th>
+<th>Montant</th>
+
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(@tableName, id) in @tableNames" :key="id">
-            @TableContent
+          <tr v-for="(detailFacture, id) in detailFactures" :key="id">
+            <th>{{ detailFacture.id }}</th>
+<th>{{ detailFacture.article }}</th>
+<th>{{ detailFacture.quantite }}</th>
+<th>{{ detailFacture.pu }}</th>
+<th>{{ detailFacture.idfacture }}</th>
+<th>{{ detailFacture.montant }}</th>
+
             <th>
               <span class="action-container">
                 <button class="btn edit" @click="editFramework(id)">Edit</button>
@@ -32,11 +44,20 @@
 
     </div>
 
-    <dialog id="dialog-@tableNames"> <!-- Ovaina par rapport am anarany ilay tableschema -->
-      <p>Add new @tableName</p>
+    <dialog id="dialog-detailFactures"> <!-- Ovaina par rapport am anarany ilay tableschema -->
+      <p>Add new detailFacture</p>
       <div class="form-container">
         <form>
-          @champs
+          <div class="input-group">
+    <label for="quantite">quantite:</label>
+    <input id="quantite" type="text" name="quantite" v-model="quantite">
+</div><div class="input-group">
+    <label for="pu">pu:</label>
+    <input id="pu" type="text" name="pu" v-model="pu">
+</div><div class="input-group">
+    <label for="montant">montant:</label>
+    <input id="montant" type="text" name="montant" v-model="montant">
+</div>
           <div class=" button-group">
             <button class="btn delete" @click.prevent="closeDialog">Cancel</button>
             <div>
@@ -247,8 +268,14 @@ export default {
   
   data() {
     return { 
-        @tableNames: [],
-        @Empty
+        detailFactures: [],
+        id: '',
+article: '',
+quantite: '',
+pu: '',
+idfacture: '',
+montant: '',
+
         isToUpdate: false,
         dialog: null
     }
@@ -257,8 +284,8 @@ export default {
   methods: {
     
     async fetchItems() {
-      const response = await axios.get('http://localhost:8080/@tableNames.do')
-      this.@tableNames = response.data.@tableNames
+      const response = await axios.get('http://localhost:8080/detailFactures.do')
+      this.detailFactures = response.data.detailFactures
     },
     
     async updateForm() {
@@ -267,16 +294,22 @@ export default {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          @RequestBody
+          id: this.id,
+article: this.article,
+quantite: this.quantite,
+pu: this.pu,
+idfacture: this.idfacture,
+montant: this.montant,
+
         })
       }
       
       const response = await fetch(
-        'http://localhost:8080/@tableNames.do',
+        'http://localhost:8080/detailFactures.do',
         request
       )
       const data = await response.json()
-      this.@tableNames.push(data)
+      this.detailFactures.push(data)
     },
 
     showDialog () {
@@ -289,22 +322,34 @@ export default {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          @RequestBody
+          id: this.id,
+article: this.article,
+quantite: this.quantite,
+pu: this.pu,
+idfacture: this.idfacture,
+montant: this.montant,
+
         })
       }
       const response = await fetch(
-        'http://localhost:8080/@tableNames.do',
+        'http://localhost:8080/detailFactures.do',
         request
       )
       const data = await response.json()
-      this.@tableNames.push(data)
+      this.detailFactures.push(data)
       this.resetField()
       // Close the dialog
       this.dialog.close();
     },
 
     resetField() {
-      @Initialisation
+      this.id = ''
+this.article = ''
+this.quantite = ''
+this.pu = ''
+this.idfacture = ''
+this.montant = ''
+
     },
 
     closeDialog() {
@@ -315,18 +360,48 @@ export default {
 
     editFramework(index) {
       this.isToUpdate = true;
-      const item = this.@tableNames[index];
-      @ItemInitialisation
+      const item = this.detailFactures[index];
+      this.id = item.id
+this.article = item.article
+this.quantite = item.quantite
+this.pu = item.pu
+this.idfacture = item.idfacture
+this.montant = item.montant
+
       this.showDialog(); 
     }
     ,
 
-    @ForeignKey
+    async fetchItems() {
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/detailFactures.do')
+this.detailFactures = response.data.detailFactures
+},
+async fetchItems() {
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/detailFactures.do')
+this.detailFactures = response.data.detailFactures
+},
+async fetchItems() {
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/detailFactures.do')
+this.detailFactures = response.data.detailFactures
+},
+async fetchItems() {
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/detailFactures.do')
+this.detailFactures = response.data.detailFactures
+},
+async fetchItems() {
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/detailFactures.do')
+this.detailFactures = response.data.detailFactures
+},
+async fetchItems() {
+const response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/detailFactures.do')
+this.detailFactures = response.data.detailFactures
+},
+
 
   },
 
   mounted() {
-    this.dialog = document.getElementById("dialog-@tableNames")
+    this.dialog = document.getElementById("dialog-detailFactures")
     this.fetchItems()
   }
 }
