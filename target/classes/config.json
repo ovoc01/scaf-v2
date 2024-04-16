@@ -5,5 +5,5 @@
     "HeadersTable": "<th>@label</th>",
     "TableContent": "<th>{{ @tableName.@field }}</th>",
     "ItemInitialisation": "this.@field = item.@field",
-    "ForeignKey" : "async fetchItems() {\nconst response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/@tableNames.do')\nthis.@tableNames = response.data.@tableNames\n},"
+    "ForeignKey__" : "async fetchItems() {\nconst response = await axios.get('http://localhost:8080/classe-1.0-SNAPSHOT/@tableNames.do')\nthis.@tableNames = response.data.@tableNames\n},"
 }
