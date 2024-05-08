@@ -54,7 +54,7 @@ public class App {
             response.type("application/json");
             ScaffoldProps sProps = new Gson().fromJson(request.body(), ScaffoldProps.class);
 
-            //System.out.println(sProps);
+            System.out.println(sProps);
 
             new GenerationSession().run(sProps);
 
@@ -78,11 +78,14 @@ public class App {
                     while ((length = fileInputStream.read(buffer)) != -1) {
                         outputStream.write(buffer, 0, length);
                     }
-                    outputStream.flush();
                     projectDirectory.delete();
+                    outputStream.flush();
                 } catch (IOException e) {
                     response.status(500);
                     return "Internal Server Error";
+                }finally {
+                    Helper.deleteDirectory(zipFile);
+                    Helper.deleteDirectory(projectDirectory);
                 }
 
                 return null;

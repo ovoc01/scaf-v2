@@ -25,8 +25,10 @@ file-extension = java
 
 ##dbFieldCorrespondance
     int4 = Integer
+    int2 = Integer
     serial = Long
     varchar = String
+    bpchar = String
     timestamp = Timestamp:java.sql.Timestamp
     date = Date:java.sql.Date
     float = Double
@@ -39,4 +41,5 @@ file-extension = java
     smallint = Integer
     doubleprecision = Double
     text = String
+    money = Double
 !!dbFieldCorrespondance

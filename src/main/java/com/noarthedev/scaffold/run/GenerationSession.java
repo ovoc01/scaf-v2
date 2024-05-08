@@ -2,6 +2,7 @@ package com.noarthedev.scaffold.run;
 
 import com.google.googlejavaformat.java.FormatterException;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
@@ -49,15 +50,16 @@ public class GenerationSession {
     langInUse.setLang(props.getLang());
 
     frameworkInUse = Framework.build(frameworkTemplate, langInUse);
-
+    
+    
     boolean isCliGenerationPresent = !frameworkInUse.getCliProjectGeneration().equals("none");
     ////System.out.println("ito ilay izy "+isCliGenerationPresent);
-    if(isCliGenerationPresent){
+    if(isCliGenerationPresent && !props.isLoadPrevious()){
       generateNewProject(frameworkInUse.getCliProjectGeneration(), props.getProjectName(), props.getGroupId(),
           props.getBuild());
     }
 
-    db.toObject(c, langInUse, frameworkInUse, props.getGroupId(), props.getProjectName(), props.getFileToGenerate(),isCliGenerationPresent);
+    db.toObject(c, langInUse, frameworkInUse, props.getGroupId(), props.getProjectName(), props.getFileToGenerate(),props.getTableToGenerate(),isCliGenerationPresent);
   }
 
   public void generateNewProject(String command, String projectName, String groupId, String buildTools)
@@ -70,6 +72,10 @@ public class GenerationSession {
     if (isWindows) {
       processBuilder.command("cmd", "/c", command);
     } else {
+
+      System.out.println("this is command");
+      System.out.println(command);
+
       processBuilder.command("bash", "-c", command);
     }
 
@@ -79,7 +85,7 @@ public class GenerationSession {
     BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
     String line;
     while ((line = reader.readLine()) != null) {
-      //System.out.println(line);
+      System.out.println(line);
     }
 
     int exitCode = process.waitFor();

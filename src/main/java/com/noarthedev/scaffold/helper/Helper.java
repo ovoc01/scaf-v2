@@ -178,5 +178,15 @@ public class Helper {
     }
 
   }
+  public static boolean deleteDirectory(File directoryToBeDeleted) {
+    File[] allContents = directoryToBeDeleted.listFiles();
+    if (allContents != null) {
+      for (File file : allContents) {
+        deleteDirectory(file); // Recursive call for subdirectories
+      }
+    }
+    return directoryToBeDeleted.delete();
+  }
+
 
 }

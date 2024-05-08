@@ -23,9 +23,10 @@ public class DatabaseSchema {
   List<TableSchema> tables;
 
   public void toObject(Connection c, ProgrammingLangSyntax pLangSyntax, Framework frameworkInUse, String groupId,
-      String projectName, String fileToGenerate, boolean isCliGenerationPresent)
+      String projectName, String fileToGenerate,String tableToGenerate, boolean isCliGenerationPresent)
       throws SQLException, FormatterException {
     final String BASE_PACKAGE = groupId + "." + projectName;
+    boolean generateAllFiles = fileToGenerate.equals("*");
     final String FILE_EXTENSION = pLangSyntax.getFileExtension();
     String outputDir = "";
     if (isCliGenerationPresent)
@@ -42,53 +43,59 @@ public class DatabaseSchema {
         null,
         new String[] { "TABLE" });
 
+
     try {
+
       while (tablesResultSet.next()) {
         TableSchema tableSchema = new TableSchema(tablesResultSet, pLangSyntax, null, null, c.getCatalog());
 
-        // //System.out.println(tableSchema.getTableName());
 
-        ResultSet otherColResultSet = databaseMetaData.getColumns(
-            null,
-            null,
-            tableSchema.getTableName(),
-            null);
+        if(generateAllFiles || tableToGenerate.contains(tableSchema.getTableName())){
+          // //System.out.println(tableSchema.getTableName());
 
-        tableSchema.intOtherColumn(otherColResultSet);
+          ResultSet otherColResultSet = databaseMetaData.getColumns(
+                  null,
+                  null,
+                  tableSchema.getTableName(),
+                  null);
 
-        // ResultSet exportedKeysRs =
-        // databaseMetaData.getExportedKeys(null,null,tableSchema.getTableName());
+          tableSchema.intOtherColumn(otherColResultSet);
 
-        tableSchema.initForeignKey(databaseMetaData);
+          // ResultSet exportedKeysRs =
+          // databaseMetaData.getExportedKeys(null,null,tableSchema.getTableName());
 
-        ResultSet primaryKeysResultSet = databaseMetaData.getPrimaryKeys(
-            null,
-            null,
-            tableSchema.getTableName());
+          tableSchema.initForeignKey(databaseMetaData);
 
-        tableSchema.initOptionalPrimaryKey(primaryKeysResultSet);
+          ResultSet primaryKeysResultSet = databaseMetaData.getPrimaryKeys(
+                  null,
+                  null,
+                  tableSchema.getTableName());
 
-        ArrayList<CodeGenerator> toGenerate = CodeGenerator.generate(tableSchema, frameworkInUse, BASE_PACKAGE,
-            fileToGenerate);
+          tableSchema.initOptionalPrimaryKey(primaryKeysResultSet);
 
-        if (!toGenerate.isEmpty()) {
-          for (CodeGenerator codeGenerator : toGenerate) {
-            Helper.generateFile(codeGenerator.getFileToGenerateName(), pLangSyntax.getFileExtension(),
-                codeGenerator.generate(), outputDir + codeGenerator.getType());
+          ArrayList<CodeGenerator> toGenerate = CodeGenerator.generate(tableSchema, frameworkInUse, BASE_PACKAGE,
+                  fileToGenerate);
+
+          if (!toGenerate.isEmpty()) {
+            for (CodeGenerator codeGenerator : toGenerate) {
+              Helper.generateFile(codeGenerator.getFileToGenerateName(), pLangSyntax.getFileExtension(),
+                      codeGenerator.generate(), outputDir + codeGenerator.getType());
+            }
           }
-        }
 
         Helper.generateFile(String.format("%s", Helper.toPascalCase(tableSchema.getTableName())), "vue",
             tableSchema.generateView(), outputDir);
 
-        // generator = new RepositoryGenerator(tableSchema, frameworkInUse,
-        // BASE_PACKAGE);
-        // System.out.println(tableSchema.generateRoute());
-        tables.add(tableSchema);
+          // generator = new RepositoryGenerator(tableSchema, frameworkInUse,
+          // BASE_PACKAGE);
+          // System.out.println(tableSchema.generateRoute());
+          tables.add(tableSchema);
+
+        }
         // break;
       }
 
-      Helper.generateFile("route", "js", generateRoute(), outputDir);
+      //Helper.generateFile("route", "js", generateRoute(), outputDir);
 
     } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
         | IllegalArgumentException | InvocationTargetException | SQLException e) {

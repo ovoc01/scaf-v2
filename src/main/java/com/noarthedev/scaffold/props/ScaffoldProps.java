@@ -13,4 +13,6 @@ public class ScaffoldProps {
    String groupId;
    String projectName;
    String fileToGenerate;
+   String tableToGenerate;
+   boolean loadPrevious;
 }
