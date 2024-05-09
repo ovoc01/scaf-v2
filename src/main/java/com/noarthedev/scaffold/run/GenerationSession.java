@@ -31,6 +31,7 @@ public class GenerationSession {
           throws SQLException, IOException, InterruptedException, NoSuchMethodException, SecurityException,
           InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException, FormatterException {
 
+    System.out.println(System.getProperty("user.dir"));
     Connection c = DriverManager.getConnection(props.getUrl(), props.getUser(), props.getPwd());
     final String lang_template = Helper.readInputStream(
           App.class.getClassLoader().getResourceAsStream(String.format("configuration/%s.temp", props.getLang())));
