@@ -1,0 +1,5 @@
+<div class="mb-3">
+   <label class="form-label" for="basic-default-fullname">@upperColumnName</label>
+       <input type="text" name="@columnName" class="form-control" id="basic-default-fullname" placeholder="">
+       <span class="text-danger">${bindingResult.getFieldError("@columnName").getDefaultMessage()}</span>
+</div>

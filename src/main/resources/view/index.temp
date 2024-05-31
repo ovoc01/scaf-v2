@@ -1,0 +1,126 @@
+<mvc:resources mapping="/resources/**" location="/resources/static/"/>
+<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+
+<%@ page import="java.util.List"%>
+<%@ page import="@entityPackage" %>
+
+<%
+    List<[entityName]> [camelCasedName]s = (List<[entityName]>) request.getAttribute("[camelCasedName]s");
+%>
+<!doctype html>
+
+<html lang="en">
+<head>
+    <base href="http://localhost:8080/">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <%@include file="../include/style.jsp" %>
+    <title>Ecole</title>
+</head>
+<body>
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+
+        <%@include file="../include/sidebar.jsp" %>
+        <div class="layout-page">
+            <!-- Navbar -->
+
+
+            <!-- / Navbar -->
+
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+                <div class="container-xxl flex-grow-1 container-p-y">
+                    <div class="card ">
+                        <h5 class="card-header ">Listes [camelCasedName]</h5>
+                        <div class="row flex justify-content-center  ">
+                            <a href="/classes/new"> <button class="btn btn-outline-primary">Creer nouveau</button></a>
+                        </div>
+                        <div class="table-responsive text-nowrap">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    @tableHeaders
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                <%
+                                    for ([entityName] [camelCasedName] : [camelCasedName]s) {%>
+                                <tr>
+                                    <td>
+                                        <span class="fw-medium"><%=[camelCasedName].@entityId%></span>
+                                    </td>
+                                    @tableBody
+
+                                    <td>
+                                        <div class="dropdown">
+                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="[camelCasedName]s/edit/<%=[camelCasedName].@entityId%>"
+                                                ><i class="bx bx-edit-alt me-1"></i> Edit</a
+                                                >
+                                                <a class="dropdown-item" href="[camelCasedName]s/delete/<%=[camelCasedName].@entityId%>"
+                                                ><i class="bx bx-trash me-1"></i> Delete</a
+                                                >
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <% }%>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-body">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination">
+                                    <li class="page-item first">
+                                        <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-left"></i></a>
+                                    </li>
+                                    <li class="page-item prev">
+                                        <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-left"></i></a>
+                                    </li>
+
+                                    <li class="page-item next">
+                                        <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-right"></i></a>
+                                    </li>
+                                    <li class="page-item last">
+                                        <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-right"></i></a>
+                                    </li>
+                                </ul>
+                                <h6>Page 1/5</h6>
+                            </nav>
+                        </div>
+
+                    </div>
+                    <%
+                        if(request.getParameter("success") != null) {%>
+                    <div class="alert alert-success alert-dismissible mt-3" role="alert">
+                        <%=request.getParameter("success")%>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+                <% }
+
+                %>
+
+
+                <div class="content-backdrop fade"></div>
+            </div>
+            <!-- Content wrapper -->
+        </div>
+
+    </div>
+
+</div>
+
+
+<%@include file="../include/script.jsp" %>
+</body>
+</html>

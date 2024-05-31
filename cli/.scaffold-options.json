@@ -1,1 +1,1 @@
-{"url":"jdbc:postgresql://localhost:5432/spring_based_application","user":"postgres","pwd":"pixel","build":"maven","lang":"java","framework":"spring","groupId":"com.example","projectName":"demo"}
+{"url":"jdbc:postgresql://localhost:5432/konstruction","user":"postgres","pwd":"pixel","build":"maven","lang":"java","framework":"spring","groupId":"com.example","projectName":"demo"}

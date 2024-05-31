@@ -6,6 +6,8 @@ import com.formulaire.component.Champ;
 import com.formulaire.component.Input;
 import com.google.googlejavaformat.java.FormatterException;
 import com.google.gson.Gson;
+
+import java.io.InputStream;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+
+import com.noarthedev.scaffold.App;
 import com.noarthedev.scaffold.helper.Helper;
 import com.noarthedev.scaffold.mapping.keys.ExportedKey;
 import com.noarthedev.scaffold.mapping.keys.ImportedKey;
@@ -368,4 +372,92 @@ public class TableSchema {
         return sb.toString();
     }
 
+    public  String generateIndex(){
+        InputStream stream = App.class.getClassLoader().getResourceAsStream("view/index.temp");
+        String template  = Helper.readInputStream(stream);
+
+
+
+        return template
+                .replace("@entityId",String.format("%s%s()","get",Helper.toPascalCase(getPrimaryKey().get().getName())))
+                .replace("@entityPackage",String.format("%s.%s",ENTITY_PACKAGE,entityName()))
+                .replace("[entityName]",entityName())
+                .replace("@tableHeaders",tableHeaders())
+                .replace("@tableBody",tableBody())
+                .replace("[camelCasedName]",Helper.toCamelCase(getTableName()));
+    }
+
+
+
+
+    private String tableBody(){
+        StringBuilder sb = new StringBuilder();
+        String th = "%s";
+        for (Column  column: realCol()){
+            sb.append("<td><%=").append(th.formatted(String.format("%s.%s%s()",tableNameToCamelCase(),"get",Helper.toPascalCase(column.getName())))).append("%></td>");
+        }
+
+        for (ImportedKey key:importedKeys){
+            sb.append("<td><%=").append(th.formatted(String.format("%s.%s%s().get%s()",tableNameToCamelCase(),"get",Helper.toPascalCase(key.getReferenceTable()),Helper.toPascalCase(key.getFKCOLUMN_NAME())))).append("%></td>");
+        }
+
+
+        return sb.toString();
+    }
+
+    private String tableHeaders(){
+
+        StringBuilder sb = new StringBuilder();
+        String th = "%s";
+        sb.append("<th>").append(th.formatted(Helper.toPascalCase(getPrimaryKey().get().getName()))).append("</th>");
+        for (Column column: realCol()){
+            sb.append("<th>").append(th.formatted(Helper.toPascalCase(column.getName()))).append("</th>");
+
+        }
+
+        for(ImportedKey ke:importedKeys){
+            sb.append("<th>").append(th.formatted(Helper.toPascalCase(ke.getType()))).append("</th>");
+        }
+        return sb.toString();
+    }
+
+
+    public String generateForm(){
+        InputStream stream = App.class.getClassLoader().getResourceAsStream("view/form.temp");
+        String template  = Helper.readInputStream(stream);
+
+        stream = App.class.getClassLoader().getResourceAsStream("view/element/input.temp");
+        String input = Helper.readInputStream(stream);
+
+
+
+        StringBuilder sb = new StringBuilder();
+        for(Column col: realCol()){
+            sb.append(
+                    input
+                            .replace("@upperColumnName",Helper.toPascalCase(col.getName()))
+                            .replace("@columnName",Helper.toCamelCase(col.getName()))
+            );
+        }
+
+        String select = Helper.readInputStream(App.class.getClassLoader().getResourceAsStream("view/element/select.temp"));
+
+        for (ImportedKey key: getImportedKeys()){
+            sb.append(
+                    select
+                            .replace("@columnName",key.getType().toLowerCase())
+                            .replace("@type", key.getType())
+                            .replace("@id",Helper.toPascalCase(key.getFKCOLUMN_NAME()))
+            );
+        }
+
+        return template
+                .replace("@formBody",sb.toString())
+                .replace("@entityPackage",String.format("%s.%s",ENTITY_PACKAGE,entityName()));
+    }
+
+
+    public String generateEdit() {
+        return "";
+    }
 }

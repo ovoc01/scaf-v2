@@ -1,0 +1,63 @@
+<mvc:resources mapping="/resources/**" location="/resources/static/" />
+<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+ <%@ page import="@entityPackage"%>
+<%@ page import="java.util.List"%>
+<%@ page import="org.springframework.validation.BindingResult"%>
+
+
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <base href="http://localhost:8080/" />
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <%@include file="../include/style.jsp" %>
+    <title>Ecole</title>
+  </head>
+  <body>
+    <div class="layout-wrapper layout-content-navbar">
+      <div class="layout-container">
+        <%@include file="../include/sidebar.jsp" %>
+        <div class="layout-page">
+          <!-- Navbar -->
+
+          <!-- / Navbar -->
+
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <div class="container-xxl flex-grow-1 container-p-y">
+                <div class="col-xl flex-column justify-content-center align-items-center  ">
+                    <div class="card mb-4  col-6">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Nouveau classes</h5>
+                            <div class="row flex ">
+                                <a href="/[camelCasedName]s"> <button class="btn btn-outline-primary">Voir listes</button></a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" action="/[camelCasedName]s">
+                                @formBody
+                                <button type="submit" class="btn btn-primary">Send</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-backdrop fade"></div>
+          </div>
+          <!-- Content wrapper -->
+        </div>
+      </div>
+    </div>
+
+    <%@include file="../include/script.jsp" %>
+  </body>
+</html>

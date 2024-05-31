@@ -71,6 +71,7 @@ async function getScaffoldProps(loadPrevious = false) {
                 { value: "spring", label: "Spring + Spring Data Jpa" },
                 { value: "quarkus", label: "Quarkus + Panache" },
                 { value: "spring-bddobject", label: "Spring + BDD Object" },
+                { value: "springmvc", label: "Spring JPA + JSP " },
                 { value: "framework", label: "Framework Mr Naina + BDD Object" },
             ]
         });
@@ -195,18 +196,14 @@ async function main() {
             const writer = fs.createWriteStream(filename, 'binary');
             res.data.pipe(writer)
 
-            if(props.loadPrevious){
-                supplementProject(props.deliveringPath)
-            }
-
-            /* return new Promise((resolve, reject) => {
-                writer.on('finish', resolve);
-                writer.on('error', reject);
-            }) */
+            
+            
 
         }))
 
-        
+        if(!createNewProject){
+            supplementProject(props.deliveringPath)
+        }
 
         s.stop();
         console.log('Download complete!');

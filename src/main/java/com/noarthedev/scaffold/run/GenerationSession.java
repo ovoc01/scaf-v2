@@ -56,6 +56,7 @@ public class GenerationSession {
     boolean isCliGenerationPresent = !frameworkInUse.getCliProjectGeneration().equals("none");
     ////System.out.println("ito ilay izy "+isCliGenerationPresent);
     if(isCliGenerationPresent && !props.isLoadPrevious()){
+
       generateNewProject(frameworkInUse.getCliProjectGeneration(), props.getProjectName(), props.getGroupId(),
           props.getBuild());
     }

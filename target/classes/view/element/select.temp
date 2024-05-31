@@ -1,0 +1,8 @@
+<div class="mb-3">
+          <label for="defaultSelect" class="form-label">@type</label>
+          <select name="@columnName" id="defaultSelect" class="form-select">
+            <% for(@type @columnName: @columnNames){ %>
+                   <option value="<%=@columnName.get@id()%>"><%=@columnName.get@id()%></option>
+            <% } %>
+          </select>
+</div>
